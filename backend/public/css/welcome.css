@@ -1,0 +1,71 @@
+header {
+    display: block !important;
+    height: auto !important;
+}
+
+.nav-first {
+    font-size: 0.9rem;
+}
+
+.nav-first li {
+    display: flex !important;
+}
+
+.nav-first li a {
+    margin: auto;
+}
+
+.navbar {
+    z-index: 1;
+    line-height: 1;
+}
+
+body {
+    background-color: black;
+}
+
+.nav-bhx {
+    margin-top: -5px;
+}
+
+.container {
+    margin: 0;
+    padding: 0;
+}
+
+.figure-24H_CN h2 {
+    margin-bottom: -10px;
+    background-image: url(../images/image_welcome/24hCongNghe_files/tagline-tincongnghe.png);
+    width: 100%;
+    height: 40px;
+}
+
+.owl-wrapper {}
+
+.price strong,
+i {
+    color: red;
+}
+
+.price span {
+    text-decoration: line-through;
+}
+
+@media only screen and (max-width: 1200px) {
+    .fas,
+    .far {
+        display: none !important;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .nav-first {
+        font-size: 0.6rem;
+    }
+}
+
+html,
+body,
+header {
+    height: 100%;
+}

@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+  text-decoration: none;
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+body {
+  background-color: #f3f5f9;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  width: 1300px;
+  max-width: 1300px;
+}
+
+.wrapper .sidebar {
+  position: absolute;
+  width: 20%;
+  height: 100%;
+  background: rgb(239, 239, 239);
+  padding: 30px 0px;
+  position: fixed;
+}
+
+.wrapper .sidebar ul li {
+  padding: 15px;
+}
+
+.wrapper .sidebar ul li a {
+  color: #5c666d;
+  display: block;
+  text-decoration: none;
+}
+
+.wrapper .sidebar ul li a .fas {
+  width: 25px;
+}
+
+.wrapper .sidebar ul li:hover {
+  background-color: #c4c1c1;
+}
+
+.wrapper .main_content {
+  width: 80%;
+  margin-left: 270px;
+  position: fixed;
+}
+
+.wrapper .main_content .header {
+  padding: 20px;
+  background: #fff;
+  color: #717171;
+  border-bottom: 1px solid #cec9c9;
+}
+
+.wrapper .main_content .info {
+  margin: 20px;
+  color: #717171;
+  line-height: 25px;
+}
+
+.wrapper .main_content .info div {
+  margin-bottom: 20px;
+}
+
+/* About */
+
+#about .about {
+  text-align: center;
+  max-width: 400px;
+  margin: 0px -30px;
+}
+
+#about .col-left {
+  width: 100%;
+  top: 0;
+  height: 350px;
+  padding-left: 60px;
+}
+
+#about .col-left .about-img {
+  height: 260px;
+  width: 240px;
+  position: relative;
+  border: 10px solid white;
+}
+
+#about .col-left .about-img img {
+  width: 220px;
+  height: 240px;
+}
+
+#about .col-left .about-img::after {
+  content: '';
+  position: absolute;
+  left: -30px;
+  top: 30px;
+  height: 100%;
+  width: 98%;
+  border: 10px solid #4481eb;
+  z-index: -1;
+}
+
+.input-img {
+  margin-top: -90px;
+  width: 500px;
+}
+
+/* End About Section */
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+#dt {
+  text-indent: -500px;
+  border-radius: 5px;
+  height: 35px;
+  width: 200px;
+  border: 1px solid #c4c1c1;
+  outline: none;
+}
+
+.btn-Date {
+  width: 70px;
+  border: 1px solid #c4c1c1;
+  padding: 2px;
+  height: 35px;
+  border-radius: 5px;
+  outline: none;
+}
+
+
+.wrapper .main_content .change-password {
+  margin: 20px;
+  color: #717171;
+  line-height: 25px;
+  width: 60%;
+}

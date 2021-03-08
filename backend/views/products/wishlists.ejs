@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="main_content">
+        <div class="header">
+            <h4>Sản phẩm yêu thích</h4>
+        </div>
+        <div class="bd-grid main">
+            <% if(wistlist[0].userProduct.length != 0) { %>
+                <% for(let wist of
+        wistlist[0].userProduct) { %>
+                    <article class="card" id="wish_<%=wist.wishlists.id%>">
+                        <div class="card__name">
+                            <p>
+                                <%=wist.product_name%>
+                            </p>
+                        </div>
+                        <div class="card__img">
+                            <img src="<%= '../images/'+ wist.product_thumbnail %>" alt="" />
+                        </div>
+                        <div class="card__precis">
+                            <div>
+                                <span class="card__preci card__preci--before">giá: <%=wist.product_price%>đ</span
+              >
+            </div>
+          </div>
+          <div id="">
+            <button
+              type="submit"
+              id="xoa"
+              name="xoa"
+              value="<%=wist.wishlists.id%>"
+            >
+              X
+            </button>
+          </div>
+        </article>
+        <% } } %>
+      </div>
+    </div>
+  </body>
+  <script src="/js/homePagejs/Jquery3.4.1.min.js"></script>
+  <script src="/js/testAj.js"></script>
+</html>
