@@ -42,23 +42,19 @@ export const getLogout = () => async (dispatch, getState) => {
   localStorage.setItem("users", JSON.stringify(getState().users));
 };
 
-export const getRegister = (email, password) => async (dispatch, getState) => {
+export const getRegister = (email, password) => async (dispatch, state) => {
   try {
     dispatch({ type: actionTypes.REGISTER_REQUEST });
     const { data } = await axios.post("/register", {
+      url: "http://localhost:3008",
       email: email,
       password: password,
     });
 
     dispatch({
       type: actionTypes.REGISTER_SUCCESS,
-      payload: {
-        user: data,
-        loggedIn: true,
-      },
+      payload: data,
     });
-
-    localStorage.setItem("users", JSON.stringify(getState().users));
   } catch (error) {
     dispatch({
       type: actionTypes.REGISTER_FAIL,

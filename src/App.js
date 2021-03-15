@@ -7,6 +7,7 @@ import ProductScreen from "./screens/ProductScreen";
 import CartScreen from "./screens/CartScreen";
 import LoginScreen from "./screens/Auth/LoginScreen";
 import RegisterSceen from "./screens/Auth/RegisterScreen";
+import VertifyActiceScreen from "./screens/Auth/VertifyActiceScreen";
 
 // components
 import Navbar from "./components/Navbar";
@@ -21,6 +22,11 @@ function App() {
           <Route exact path="/cart" component={CartScreen} />
           <Route exact path="/login" component={LoginScreen} />
           <Route exact path="/register" component={RegisterSceen} />
+          <Route
+            exact
+            path="/verify-email/:activation_token"
+            component={VertifyActiceScreen}
+          />
         </Switch>
       </main>
     </Router>

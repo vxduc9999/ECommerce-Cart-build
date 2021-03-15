@@ -24,16 +24,20 @@ export const loginReducer = (state = { user: {} }, action) => {
   }
 };
 
-export const registerReducer = (state = { user: {} }, action) => {
+export const registerReducer = (state = { message: {} }, action) => {
   switch (action.type) {
     case actionTypes.REGISTER_REQUEST:
       return {
         loading: true,
       };
     case actionTypes.REGISTER_SUCCESS:
-      return action.payload;
+      return {
+        ...state,
+        message: action.payload,
+      };
     case actionTypes.REGISTER_FAIL:
       return {
+        ...state,
         error: action.payload,
       };
     default:
