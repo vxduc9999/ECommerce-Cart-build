@@ -88,11 +88,18 @@ product_reviews.belongsTo(userModel, { foreignKey: "user_id" });
 const { Op } = require("sequelize");
 const images = require("./models/shop.models").images;
 const bcrypt = require("bcryptjs");
-const sgMail = require("@sendgrid/mail");
 const crypto = require("crypto");
-const sequelize = require("sequelize");
-// set key sendmail
-sgMail.setApiKey(process.env.sendgridAPIKey);
+const nodemailer = require("nodemailer");
+
+const transporter = nodemailer.createTransport({
+  port: 465, // true for 465, false for other ports
+  host: "smtp.gmail.com",
+  auth: {
+    user: "myshopuwp@gmail.com",
+    pass: "shop1234567890",
+  },
+  secure: true,
+});
 
 app.get("/", (req, res) => {
   Products.findAll({ limit: 10 })
@@ -118,39 +125,33 @@ app.post("/login", async (req, res) => {
 app.post("/register", async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
-  const comfirmPassword = req.body.confirmPassword;
+  const url = req.body.url;
   const emailToken = crypto.randomBytes(64).toString("hex");
-  if (email.trim() !== "") {
-    if (
-      password.trim() === "" ||
-      comfirmPassword.trim() === "" ||
-      password !== comfirmPassword
-    ) {
-      return res.status(404).send({ error: "incorrect password" });
-    } else {
-      const user = await userModel.findOne({
-        where: {
-          email: email,
-        },
-      });
-      if (user) {
-        return res.status(404).send({ error: "exists user" });
-      } else {
-        const msg = {
-          to: email, // Change to your recipient
-          from: "ducga079099@gmail.com", // Change to your verified sender
-          subject: "Sending with SendGrid is Fun",
-          text: `http://${req.headers.host}/verify-email?token=${emailToken}`,
-          html: `<p>Please click the link below to verify your account</p>
-                            <a href="http://${req.headers.host}/verify-email?token=${emailToken}">
+  const user = await userModel.findOne({
+    where: {
+      email: email,
+    },
+  });
+  if (user) {
+    return res.status(404).send({ message: "exists user" });
+  } else {
+    //return res.status(200).send({ message: "success" });
+    const msg = {
+      to: email, // Change to your recipient
+      from: "myshopuwp@gmail.com", // Change to your verified sender
+      subject: "Sending with SendGrid is Fun",
+      text: `${url}/verify-email/${emailToken}`,
+      html: `<p>Please click the link below to verify your account</p>
+                            <a href="${url}/verify-email/${emailToken}">
                             Verify your account
                             </a>
                         `,
-        };
-      }
-    }
-  } else {
-    return res.status(404).send({ error: "invalid email" });
+    };
+
+    transporter.sendMail(msg, function (err, info) {
+      if (err) console.log(err);
+      else return res.status(200).send({ message: "Send mail success!" });
+    });
   }
 });
 
