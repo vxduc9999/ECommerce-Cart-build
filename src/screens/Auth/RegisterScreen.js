@@ -7,6 +7,7 @@ import axios from "../../redux/configAxios";
 
 // Actions
 import { getRegister } from "../../redux/actions/authActions";
+import { FormFeedback } from "reactstrap";
 
 const RegisterScreen = () => {
   // const [email, setEmail] = useState("");
@@ -53,12 +54,12 @@ const RegisterScreen = () => {
 
     try {
       dispatch(getRegister(email, password));
-      const res = await axios.post("/register", {
-        url: "http://localhost:3008",
-        email: email,
-        password: password,
-      });
-      setUser({ ...user, err: "", success: res.data.message });
+      // const res = await axios.post("/register", {
+      //   url: "http://localhost:3008",
+      //   email: email,
+      //   password: password,
+      // });
+      // setUser({ ...user, err: "", success: res.data.message });
     } catch (err) {
       err.response.data.message &&
         setUser({ ...user, err: err.response.data.message, success: "" });
@@ -78,6 +79,7 @@ const RegisterScreen = () => {
           name="email"
           onChange={handleChangeInput}
         ></input>
+
         <br />
         <br />
         <input

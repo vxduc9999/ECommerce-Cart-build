@@ -18,7 +18,7 @@ app.use(express.static(path.join(__dirname, "/public")));
 app.use(bodyParser.json());
 app.use(cors());
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 4000;
 
 // const Shop = require("./routes/shopRoute");
 // const User = require("./routes/userRoute");
@@ -52,7 +52,7 @@ app.use((req, res, next) => {
 
 // Product - love-product - user
 Products.belongsToMany(userModel, {
-  as: "productLiked",
+  as: "produ``4``444ctLiked",
   through: wishlists,
   foreignKey: "product_id",
 });
@@ -88,18 +88,11 @@ product_reviews.belongsTo(userModel, { foreignKey: "user_id" });
 const { Op } = require("sequelize");
 const images = require("./models/shop.models").images;
 const bcrypt = require("bcryptjs");
+const sgMail = require("@sendgrid/mail");
 const crypto = require("crypto");
-const nodemailer = require("nodemailer");
-
-const transporter = nodemailer.createTransport({
-  port: 465, // true for 465, false for other ports
-  host: "smtp.gmail.com",
-  auth: {
-    user: "myshopuwp@gmail.com",
-    pass: "shop1234567890",
-  },
-  secure: true,
-});
+const sequelize = require("sequelize");
+// set key sendmail
+sgMail.setApiKey(process.env.sendgridAPIKey);
 
 app.get("/", (req, res) => {
   Products.findAll({ limit: 10 })
@@ -257,12 +250,7 @@ app.get("/detail/:slug", (req, res) => {
       ],
     })
       .then((product) => {
-        //res.json(product);
         res.send(product);
-        // return res.status(200).render("products/productDetail", {
-        //   product,
-        //   moment: moment,
-        // });
       })
       .catch((err) => console.log(err));
   } else {

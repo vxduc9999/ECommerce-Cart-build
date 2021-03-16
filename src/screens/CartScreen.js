@@ -1,5 +1,4 @@
 import "./CartScreen.css";
-import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -7,7 +6,11 @@ import { Link } from "react-router-dom";
 import CartItem from "../components/CartItem";
 
 // Actions
-import { removeFromCart, qtyToCart } from "../redux/actions/cartActions";
+import {
+  removeFromCart,
+  qtyToCart,
+  addToCart,
+} from "../redux/actions/cartActions";
 
 const CartScreen = () => {
   const dispatch = useDispatch();
@@ -16,6 +19,7 @@ const CartScreen = () => {
 
   const qtyChangeHandler = (id, qty) => {
     dispatch(qtyToCart(id, qty));
+    //dispatch(addToCart(id, qty));
   };
 
   const removeHandler = (id) => {

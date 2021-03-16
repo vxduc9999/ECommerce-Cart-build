@@ -57,6 +57,12 @@ export const increase = (qty) => async (dispatch) => {
   }
 };
 
+export const removeProductDetails = () => (dispatch) => {
+  dispatch({
+    type: actionTypes.GET_PRODUCT_DETAIL_REQUEST,
+  });
+};
+
 export const decrease = (qty) => async (dispatch) => {
   try {
     dispatch({

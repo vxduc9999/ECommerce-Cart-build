@@ -18,7 +18,7 @@ const ProductScreen = ({ match, history }) => {
     if (product && match.params.slug !== product.product_slug) {
       dispatch(getProductDetails(match.params.slug));
     }
-  }, [dispatch, match, product]);
+  }, [dispatch, product, match]);
 
   const increaseCounter = () => {
     if (qty + 1 <= product.product_quantity) setQty(qty + 1);
