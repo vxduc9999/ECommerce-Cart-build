@@ -4,7 +4,6 @@ export const cartReducer = (state = { cartItem: [] }, action) => {
   switch (action.type) {
     case actionTypes.ADD_TO_CART:
       const item = action.payload;
-
       const existItem = state.cartItem.find((x) => x.product === item.product);
       if (existItem) {
         return {

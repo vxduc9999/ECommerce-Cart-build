@@ -15,7 +15,7 @@ const RegisterScreen = () => {
   // const [confirmPassword, setConfirmPassword] = useState("");
   const dispatch = useDispatch();
   const test = useSelector((state) => state.getRegister);
-  console.log(test);
+
   const loginHandler = (e) => {
     e.preventDefault();
     dispatch(getRegister(email, password, confirmPassword));
@@ -29,7 +29,9 @@ const RegisterScreen = () => {
     setUser({ ...user, [name]: value, err: "", success: "" });
   };
 
-  const handleSubmit = async (e) => {
+  let counter = useSelector((state) => state.register);
+
+  const HandleSubmit = async (e) => {
     e.preventDefault();
 
     if (!isEmail(email))
@@ -51,26 +53,13 @@ const RegisterScreen = () => {
 
     if (!isMatch(password, confirmPassword))
       return setUser({ ...user, err: "Password did not match.", success: "" });
-
-    try {
-      dispatch(getRegister(email, password));
-      // const res = await axios.post("/register", {
-      //   url: "http://localhost:3008",
-      //   email: email,
-      //   password: password,
-      // });
-      // setUser({ ...user, err: "", success: res.data.message });
-    } catch (err) {
-      err.response.data.message &&
-        setUser({ ...user, err: err.response.data.message, success: "" });
-    }
+    dispatch(getRegister(email, password));
   };
 
   return (
     <div>
-      {err}
-
-      <form onSubmit={handleSubmit}>
+      {counter.error}
+      <form onSubmit={HandleSubmit}>
         <h1>Register here</h1>
         <input
           type="email"

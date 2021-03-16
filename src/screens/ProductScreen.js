@@ -6,12 +6,16 @@ import React from "react";
 // Actions
 import { getProductDetails } from "../redux/actions/productAction";
 import { addToCart } from "../redux/actions/cartActions";
+import { ButtonGroup } from "reactstrap";
 
 const ProductScreen = ({ match, history }) => {
   const [qty, setQty] = useState(1);
   const dispatch = useDispatch();
 
+  const [urlImages, seturlImages] = useState();
+
   const productDetails = useSelector((state) => state.getProductDetails);
+
   const { loading, error, product } = productDetails;
 
   useEffect(() => {
@@ -20,6 +24,7 @@ const ProductScreen = ({ match, history }) => {
     }
   }, [dispatch, product, match]);
 
+  console.log(product);
   const increaseCounter = () => {
     if (qty + 1 <= product.product_quantity) setQty(qty + 1);
   };
@@ -29,9 +34,15 @@ const ProductScreen = ({ match, history }) => {
   };
 
   const addToCartHandler = () => {
-    dispatch(addToCart(product.id, qty));
+    dispatch(addToCart(product.product_slug, qty));
     history.push("/cart");
   };
+
+  const handleClickImagesItem = (name) => {
+    seturlImages(name);
+  };
+  console.log(urlImages);
+
   return (
     <div className="productscreen">
       {loading ? (
@@ -40,31 +51,55 @@ const ProductScreen = ({ match, history }) => {
         <h2>{error}</h2>
       ) : (
         <>
-          <div className="left__image">
-            <img
-              src={`/images/${product.product_thumbnail}`}
-              alt="product_name"
-            ></img>
-          </div>
-
-          <div className="left__info">
-            <p className="left__name">{product.product_name}</p>
-            <p>Price: {product.product_price}VND</p>
-            <p>Description: {product.product_description}</p>
+          <div className="productscreen__left">
+            <div className="left__image">
+              <img
+                src={`/images/${
+                  urlImages == undefined ? product.product_thumbnail : urlImages
+                }`}
+                alt="product_name"
+              ></img>
+            </div>
+            <div className="left__image__item">
+              <img
+                onClick={() => handleClickImagesItem(product.product_thumbnail)}
+                className="left__image__main"
+                src={`/images/${product.product_thumbnail}`}
+                alt="product_name"
+              ></img>
+              {product["images"] == undefined
+                ? ""
+                : product["images"].map((x) => (
+                    <img
+                      onClick={() => handleClickImagesItem(x.name)}
+                      src={`/images/${x.name}`}
+                      alt="productdetail_name"
+                    ></img>
+                  ))}
+            </div>
           </div>
 
           <div className="productscreen__right">
-            <p>Price: {product.product_price}VND</p>
-            <div>
-              <button onClick={decreaseCounter}>-</button>
-              <p value={qty}>{qty}</p>
-              <button onClick={increaseCounter}>+</button>
+            <div className="right__info">
+              <p className="right__name">{product.product_name}</p>
+              <div className="right__price_couter">
+                <p className="right__price">
+                  Price: {product.product_price}VND
+                </p>
+                <div className="right__couter">
+                  <button onClick={decreaseCounter}>-</button>
+                  <p value={qty}>{qty}</p>
+                  <button onClick={increaseCounter}>+</button>
+                </div>
+              </div>
+
+              <p>Description: {product.product_description}</p>
+              <div className="right__add">
+                <button type="button" onClick={addToCartHandler}>
+                  Add to cart
+                </button>
+              </div>
             </div>
-            <p>
-              <button type="button" onClick={addToCartHandler}>
-                Add to cart
-              </button>
-            </p>
           </div>
         </>
       )}
