@@ -15,6 +15,7 @@ const CartScreen = () => {
   const { cartItem } = cart;
 
   const qtyChangeHandler = (id, qty) => {
+    console.log(id);
     dispatch(qtyToCart(id, qty));
   };
 

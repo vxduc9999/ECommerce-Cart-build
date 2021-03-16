@@ -12,6 +12,7 @@ const ProductScreen = ({ match, history }) => {
   const dispatch = useDispatch();
 
   const productDetails = useSelector((state) => state.getProductDetails);
+
   const { loading, error, product } = productDetails;
 
   useEffect(() => {
@@ -29,7 +30,7 @@ const ProductScreen = ({ match, history }) => {
   };
 
   const addToCartHandler = () => {
-    dispatch(addToCart(product.id, qty));
+    dispatch(addToCart(product.product_slug, qty));
     history.push("/cart");
   };
   return (

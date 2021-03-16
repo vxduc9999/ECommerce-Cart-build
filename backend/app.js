@@ -18,7 +18,7 @@ app.use(express.static(path.join(__dirname, "/public")));
 app.use(bodyParser.json());
 app.use(cors());
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 4000;
 
 // const Shop = require("./routes/shopRoute");
 // const User = require("./routes/userRoute");
@@ -154,81 +154,6 @@ app.post("/register", async (req, res) => {
     });
   }
 });
-
-// app.get("/:id", (req, res) => {
-//   const user = req.session.user;
-//   const id = req.params.id;
-
-//   // chưa có user
-//   if (user == null) {
-//     Products.findOne({
-//       where: {
-//         id: {
-//           [Op.eq]: id,
-//         },
-//       },
-//       include: [
-//         {
-//           model: images,
-//           limit: 4,
-//         },
-//         {
-//           model: userModel,
-//           as: "productByComment",
-//           through: {
-//             attributes: ["comment", "rate", "created_at"],
-//           },
-//         },
-//       ],
-//     })
-//       .then((product) => {
-//         //res.json(product);
-//         res.send(product);
-//         // return res.status(200).render("products/productDetail", {
-//         //   product,
-//         //   moment: moment,
-//         // });
-//       })
-//       .catch((err) => console.log(err));
-//   } else {
-//     // có user
-//     Products.findOne({
-//       where: {
-//         id: id,
-//       },
-//       include: [
-//         {
-//           model: userModel,
-//           as: "productLiked",
-//           through: {
-//             // if not found then return empty array []
-//             where: {
-//               user_id: user.id,
-//             },
-//           },
-//         },
-//         {
-//           model: images,
-//         },
-//         {
-//           model: userModel,
-//           as: "productByComment",
-//           through: {
-//             attributes: ["comment", "rate", "created_at"],
-//           },
-//         },
-//       ],
-//       order: [[{ model: images }, "id", "ASC"]],
-//     })
-//       .then((product) => {
-//         res.send(product);
-//         // return res.status(200).render('products/productDetail', {
-//         //     product
-//         // });
-//       })
-//       .catch((err) => console.log(err));
-//   }
-// });
 
 app.get("/detail/:slug", (req, res) => {
   const user = req.session.user;

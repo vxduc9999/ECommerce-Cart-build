@@ -32,13 +32,13 @@ export const registerReducer = (state = { message: {} }, action) => {
       };
     case actionTypes.REGISTER_SUCCESS:
       return {
-        ...state,
         message: action.payload,
+        loading: false,
       };
     case actionTypes.REGISTER_FAIL:
       return {
-        ...state,
         error: action.payload,
+        loading: false,
       };
     default:
       return state;

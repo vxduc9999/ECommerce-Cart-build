@@ -42,7 +42,7 @@ export const getLogout = () => async (dispatch, getState) => {
   localStorage.setItem("users", JSON.stringify(getState().users));
 };
 
-export const getRegister = (email, password) => async (dispatch, state) => {
+export const getRegister = (email, password) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.REGISTER_REQUEST });
     const { data } = await axios.post("/register", {
