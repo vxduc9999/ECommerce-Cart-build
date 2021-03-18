@@ -1,9 +1,6 @@
-# Getting Started with Create React App
-
+yarn
+cd backend 
 npm install
-<br/>
-cd backend
-<br/>
-npm install
-<br/>
-npm start
+cd frontend
+yarn
+npm run start
