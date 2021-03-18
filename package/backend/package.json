@@ -1,24 +1,45 @@
 {
-  "name": "mini-project-economic",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "dev": "yarn workspace shop dev &&yarn workspace @app/frontend start",
-    "start": "concurrently \"yarn workspace shop dev\" \"yarn workspace @app/frontend start\""
-  },
-  "author": "",
-  "license": "ISC",
-  "private": true,
-  "workspaces": {
-    "packages": [
-      "package/*"
-    ]
-  },
-  "dependencies": {
-    "bootstrap": "^4.6.0",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "reactstrap": "^8.9.0"
-  }
+    "name": "shop",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start-server": "node app.js",
+        "dev": "nodemon app.js",
+        "client": "cd ../ && yarn workspace @app/frontend start",
+        "start": "concurrently \"npm run dev\" \"npm run client\""
+    },
+    "webdriver-update": "./node_modules/protractor/bin/webdriver-manager update",
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@elastic/elasticsearch": "^7.11.0",
+        "@sendgrid/mail": "^7.4.2",
+        "axios": "^0.21.1",
+        "bcryptjs": "^2.4.3",
+        "body-parser": "^1.19.0",
+        "concurrently": "^6.0.0",
+        "cors": "^2.8.5",
+        "crypto-js": "^4.0.0",
+        "dotenv": "^8.2.0",
+        "ejs": "^3.1.5",
+        "elasticsearch": "^16.7.2",
+        "express": "^4.17.1",
+        "express-session": "^1.17.1",
+        "get-json": "^1.0.1",
+        "moment": "^2.29.1",
+        "morgan": "^1.10.0",
+        "nodemailer": "^6.4.17",
+        "nodemailer-sendgrid-transport": "^0.2.0",
+        "path": "^0.12.7",
+        "pg": "^8.5.1",
+        "pg-hstore": "^2.3.3",
+        "react-js-pagination": "^3.0.3",
+        "reactstrap": "^8.9.0",
+        "sequelize": "^6.5.0"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.7"
+    }
 }
