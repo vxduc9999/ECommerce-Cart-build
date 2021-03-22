@@ -4,7 +4,6 @@ import { BrowserRouter as Router } from "react-router-dom";
 // Components
 
 import Navbar from "../components/Navbar/Navbar";
-import Backdrop from "../components/Backdrop/Backdrop";
 
 import Header from "../layouts/Header/Header.layout"
 
@@ -22,7 +21,6 @@ function Routes() {
     return (
         <Router>
             <Header/>
-            <Backdrop show={sideToggle} click={() => setSideToggle(false)} />
             <main className="app">
                 <LoginScreen/>
                 <RegisterScreen/>

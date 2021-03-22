@@ -25,6 +25,21 @@ const Navbar = () => {
 
       <ul className="navbar__links">
         <li>
+          <div className="wishlist_btn">
+            <a href="/user/wishlist"><i class="fas fa-heart"></i></a>
+          </div>
+        </li>
+
+        <li>
+          <Link to="/cart" className="cart__links">
+            <i className="fas fa-shopping-cart"></i>
+            <span>
+              Cart
+              <span className="cartlogo_badge">({cartItem.length})</span>
+            </span>
+          </Link>
+        </li>
+        <li>
           <Link to="/cart" className="cart__links">
             <i className="fas fa-shopping-cart"></i>
             <span>

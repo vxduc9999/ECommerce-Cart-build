@@ -57,68 +57,18 @@
     background-color: #f0f0f0;
 }
 
-.header_bottom.sticky-header.sticky .main_menu_inner {
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.header_bottom.sticky-header.sticky .logo_sticky {
-    display: block;
-}
-
-.sticky-header.sticky {
-    position: fixed;
-    z-index: 99;
-    width: 100%;
-    top: 0;
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.11);
-    animation-name: fadeInDown;
-    animation-duration: 900ms;
-    animation-timing-function: cubic-bezier(0.2, 1, 0.22, 1);
-    animation-delay: 0s;
-    animation-iteration-count: 1;
-    animation-direction: normal;
-    animation-fill-mode: none;
-    animation-play-state: running;
-}
-
-.header_bottom.sticky-header.sticky .main_menu_inner {
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.sticky-header.sticky {
-    background: white;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.11);
-}
 
 .main_menu_inner {
+    height: 60px;
     text-align: center;
-}
-
-.logo_sticky {
-    display: none;
-    margin-right: 35px;
-}
-
-.logo_sticky a img {
-    max-width: 120px;
 }
 
 .main_menu nav>ul>li {
-    margin-top: -12px;
     display: inline-block;
     position: relative;
+    margin-top: -5px;
 }
 
-.main_menu nav>ul>li>a i {
-    margin-left: 2px;
-}
 
 .main_menu nav>ul>li:hover>a {
     color: #4481eb;
@@ -307,13 +257,28 @@
     text-transform: uppercase;
     font-weight: 500;
 }
-
-.contact_icone {
-    height: 30px;
+.contact_icone i {
+    margin-bottom: -30px;
+    font-size: 30px;
 }
 
-.contact_icone img {
-    width: 100%;
-    height: 30px;
+.wishlist_btn {
+    margin-left: 18px;
 }
+
+.wishlist_btn a {
+    width: 45px;
+    height: 45px;
+    text-align: center;
+    line-height: 55px;
+    color: #212121;
+    font-size: 20px;
+    display: block;
+}
+
+.wishlist_btn a:hover {
+    color: #4481eb;
+}
+
+
 /*End Bottom HEader*/

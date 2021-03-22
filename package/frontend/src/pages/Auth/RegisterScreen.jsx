@@ -59,38 +59,56 @@ const RegisterScreen = () => {
   };
 
   return (
-    <div>
-      {counter.error}
-      <form onSubmit={HandleSubmit}>
-        <h1>Register here</h1>
-        <input
-          type="email"
-          placeholder="email"
-          value={email}
-          name="email"
-          onChange={handleChangeInput}
-        ></input>
-        <br />
-        <br />
-        <input
-          type="password"
-          placeholder="password"
-          value={password}
-          name="password"
-          onChange={handleChangeInput}
-        ></input>
-        <br />
-        <br />
-        <input
-          type="password"
-          placeholder="Confirm Password"
-          value={confirmPassword}
-          name="confirmPassword"
-          onChange={handleChangeInput}
-        ></input>
-        <button type="submit">Register</button>
-      </form>
+    <div id="container">
+      <div class="form-container1 ">
+        {counter.error}
+        <form onSubmit={HandleSubmit} class="sign-up-container form">
+          <h1 class="title">Sign Up</h1>
+          <div class="input-field">
+            <i class="fas fa-user"></i>
+            <input type="email"
+              placeholder="Email"
+              value={email}
+              name="email"
+              onChange={handleChangeInput} />
+          </div>
+          <div class="input-field">
+            <i class="fas fa-lock"></i>
+            <input type="password"
+              placeholder="Password"
+              value={password}
+              name="password"
+              onChange={handleChangeInput} />
+          </div>
+          <div class="input-field">
+            <i class="fas fa-check-circle"></i>
+            <input type="password"
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              name="confirmPassword"
+              onChange={handleChangeInput} />
+          </div>
+          <button className="button" type="submit">Sign Up</button>
+          <p class="social-text">Or sign up with social platforms</p>
+          <div class="social-container">
+            <a href="https://www.facebook.com/" class="social" target="_blank">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://twitter.com/" class="social" target="_blank">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="https://ads.google.com/" class="social" target="_blank">
+              <i class="fab fa-google"></i>
+            </a>
+            <a href="https://instagram.com/" class="social" target="_blank">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+          </div>
+        </form>
+      </div>
+
     </div>
+
   );
 };
 

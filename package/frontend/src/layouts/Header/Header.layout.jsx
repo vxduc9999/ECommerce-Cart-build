@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import "../layout.css"
 import "./Header.layout.css"
+import queryString from 'query-string';
 import { Link } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -11,15 +12,55 @@ import CartItem from "../../components/CartItem/CartItem";
 
 // Actions
 import { removeFromCart, qtyToCart } from "../../redux/actions/cartActions";
+import SearchComponent from '../../components/Search/search.component';
 
 HeaderLayout.propTypes = {
 
 };
 
 function HeaderLayout(props) {
+
+    const [postList, setPostList] = useState([]);
+    const [pagination, setPagination] = useState({
+        _page: 1,
+        _limit: 10,
+        _totalRows: 11,
+
+    });
+    const [filter, setFilter] = useState({
+        limit: 10,
+        _page: 1
+    })
+
+    useEffect(() => {
+        async function fetchPostList() {
+            try {
+                const paramsString = queryString.stringify(filter);
+
+                const requesUrl = `http://js-post-api.herokuapp.com/api/posts?${paramsString}`;
+                const response = await fetch(requesUrl);
+                const responseJSON = await response.json();
+                console.log({ responseJSON });
+
+                const { data, pagination } = responseJSON;
+                setPostList(data);
+                setPagination(pagination);
+            } catch (error) {
+                console.log('fail', error.message);
+            }
+        }
+        fetchPostList();
+    }, [filter])
+    function handleFilterChange(newFilter) {
+        console.log("New Filter:", newFilter);
+        setFilter({
+            ...filter,
+            _page: 1,
+            title_like: newFilter.searchTerm,
+        })
+    }
     const dispatch = useDispatch();
     const cart = useSelector((state) => {
-
         return state.cart
     });
     const { cartItem } = cart;
@@ -31,7 +72,7 @@ function HeaderLayout(props) {
         dispatch(getLogout());
     };
     return (
-        <div>
+        <div >
             <div id="top">
                 <div id="top-left">
                     <ul>
@@ -51,6 +92,15 @@ function HeaderLayout(props) {
                 </div>
                 <div id="top-right">
                     <ul className="navbar__links">
+                        <li>
+                            <Link to="/cart" className="cart__links">
+                                <li><i class="fas fa-heart"></i></li>
+                                <span>
+                                    Love
+                                    <span an className="cartlogo_badge">({cartItem.length})</span>
+                                </span>
+                            </Link>
+                        </li>
                         <li>
                             <Link to="/cart" className="cart__links">
                                 <li><i className="fas fa-shopping-cart"></i></li>
@@ -94,39 +144,21 @@ function HeaderLayout(props) {
                                 <div className="main_menu">
                                     <nav>
                                         <ul>
-                                            <li className="active">
+                                            <li>
                                                 <div className="contact_icone" >
-                                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQh77byXGcJxPbKd4bZcGin2_3ysf3_nXIElw&usqp=CAU" alt="">
-
-                                                    </img>
+                                                    <i class="fab fa-apple"></i>
                                                 </div>
                                             </li>
-                                            <li><Link to="/">Shop</Link></li>
-                                            {/* <li><a href="#">iPad</a></li>
+                                            <li><Link to="/">Mac</Link></li>
+                                            <li><a href="#">iPad</a></li>
                                             <li><a href="#">iPhone</a></li>
-                                            <li><a href="#">Watch</a></li> */}
+                                            <li><a href="#">Watch</a></li>
                                             <li><a href="#">Support</a></li>
+
                                             <li>
-                                                <div className="search_btn">
-                                                    <a href="#"><i className="ion-ios-search-strong"></i></a>
-                                                    <div className="dropdown_search">
-                                                        <form action="#">
-                                                            <input type="text" id="searchName" placeholder="Search Product ...."></input>
-                                                            <button type="submit"><i className="ion-ios-search-strong"></i></button>
-                                                        </form>
-                                                    </div>
-                                                </div>
+                                                <SearchComponent onSubmit={handleFilterChange} />
                                             </li>
-                                            <li>
-                                                <div className="wishlist_btn">
-                                                    <a href="/user/wishlist"><i className="ion-heart"></i></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div className="cart_link">
-                                                    <a href="/cart"><i className="ion-android-cart"></i></a>
-                                                </div>
-                                            </li>
+
                                         </ul>
                                     </nav>
                                 </div>
@@ -135,6 +167,7 @@ function HeaderLayout(props) {
                     </div>
                 </div>
             </div>
+
         </div >
     );
 }

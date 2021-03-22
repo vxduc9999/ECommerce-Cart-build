@@ -8,7 +8,6 @@ export const getLogin = (email, password) => async (dispatch, getState) => {
       email: email,
       password: password,
     });
-    console.log(`🚀 => file: authActions.js => line 11 => data`, data)
 
     dispatch({
       type: actionTypes.LOGIN_SUCCESS,
@@ -51,7 +50,6 @@ export const getRegister = (email, password) => async (dispatch) => {
       email:email ,
       password: password,
     });
-    console.log(`🚀 => file: authActions.js => line 53 => data`, data)
 
     dispatch({
       type: actionTypes.REGISTER_SUCCESS,
