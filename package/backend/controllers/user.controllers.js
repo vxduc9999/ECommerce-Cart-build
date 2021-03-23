@@ -10,9 +10,20 @@ const Wishlist = require("../models/shop.models").wishlists;
 const sgMail = require("@sendgrid/mail");
 const crypto = require("crypto");
 const { Op } = require("sequelize");
+const nodemailer = require("nodemailer");
 
 // set key sendmail
 sgMail.setApiKey(process.env.sendgridAPIKey);
+
+const transporter = nodemailer.createTransport({
+  port: 465, // true for 465, false for other ports
+  host: "smtp.gmail.com",
+  auth: {
+    user: "myshopuwp@gmail.com",
+    pass: "shop1234567890",
+  },
+  secure: true,
+});
 
 // get signin
 exports.getSignin = (req, res, next) => {
@@ -26,34 +37,14 @@ exports.postSignin = async (req, res, next) => {
   const password = req.body.password;
   const user = await User.findOne({ where: { email: email } });
   if (user) {
-    bcrypt.compare(password, user.password, (err, result) => {
+    await bcrypt.compare(password, user.password, (err, result) => {
       if (result) {
-        req.session.isLoggedIn = true;
-        req.session.user = user;
-        return req.session.save(async (err) => {
-          if ((await req.session.currentPage) === "cart") {
-            delete req.session.currentPage;
-            res.redirect("/cart");
-          } else if ((await req.session.currentPage) === "orderList") {
-            delete req.session.currentPage;
-            res.redirect("/user/order-list");
-          } else if ((await req.session.currentPage) === "loveproduct") {
-            delete req.session.currentPage;
-            const product = await Product.findOne({
-              where: { id: await req.session.product_id },
-            });
-            res.redirect("/detail/" + product.product_slug);
-          } else if ((await req.session.currentPage) === "wistlist") {
-            delete req.session.currentPage;
-            res.redirect("/user/wishlist");
-          }
-          res.redirect("/");
-        });
+        return res.status(200).send(user);
       } else {
-        console.log("Your password not mached.");
+        return res.status(404).send({ message: "Password wrong!" });
       }
     });
-  }
+  } else return res.status(404).send({ message: "Account not exists!" });
 };
 
 // get signup
@@ -67,65 +58,60 @@ exports.getSignup = (req, res, next) => {
 exports.postSignup = async (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
-  const comfirmPassword = req.body.confirmPassword;
+  const url = req.body.url;
   const emailToken = crypto.randomBytes(64).toString("hex");
-  if (email.trim() !== "") {
-    User.findOne({
-      where: {
-        email: email,
-      },
-    })
-      .then((user) => {
-        if (user) return res.status(404).send({ error: "exists user" });
-        else if (
-          password.trim() === "" ||
-          comfirmPassword.trim() === "" ||
-          password !== comfirmPassword
-        )
-          return res.status(404).send({ error: "incorrect password" });
-        else {
-          const msg = {
-            to: email, // Change to your recipient
-            from: "ducga079099@gmail.com", // Change to your verified sender
-            subject: "Sending with SendGrid is Fun",
-            text: `http://${req.headers.host}/verify-email?token=${emailToken}`,
-            html: `<p>Please click the link below to verify your account</p>
-                            <a href="http://${req.headers.host}/verify-email?token=${emailToken}">
+  const user = await User.findOne({
+    where: {
+      email: email,
+    },
+  });
+  if (user) {
+    return res.status(404).send({ message: "exists user" });
+  } else {
+    const msg = {
+      to: email, // Change to your recipient
+      from: "myshopuwp@gmail.com", // Change to your verified sender
+      subject: "Sending with SendGrid is Fun",
+      text: `${url}/verify-email/${emailToken}`,
+      html: `<p>Please click the link below to verify your account</p>
+                            <a href="${url}/verify-email/${emailToken}">
                             Verify your account
                             </a>
                         `,
-          };
-          User.count().then((c) => {
-            User.create({
-              email: email,
-              password: bcrypt.hashSync(password, 12),
-              status: emailToken,
-            });
-
-            sgMail
-              .send(msg)
-              .then(() => {
-                console.log("Email sent");
-                return res.status(200).redirect("/");
-              })
-              .catch((error) => {
-                console.error(error);
-              });
-          });
-        }
-      })
-      .catch((err) => console.log(err));
-  } else {
-    return res.status(404).send({ error: "invalid email" });
+    };
+    transporter.sendMail(msg, async (err, info) => {
+      if (err) console.log(err);
+      else {
+        await User.create({
+          email: email,
+          password: bcrypt.hashSync(password, 12),
+          status: emailToken,
+        });
+        return res.status(200).send({
+          message: "Send mail success!. Please check your mail to vetify",
+        });
+      }
+    });
   }
 };
 
 // verify email
 exports.getVerifyEmail = async (req, res, next) => {
-  const user = await User.findOne({ where: { status: req.query.token } });
-  user.status = null;
-  await user.save();
-  res.redirect("/signin");
+  const token = req.params.token;
+  console.log(token);
+  const user = await User.findOne({
+    where: {
+      status: token,
+    },
+  });
+
+  if (user === null) {
+    return res.status(404).send({ message: "Your account is verified" });
+  } else {
+    user.status = null;
+    await user.save();
+    return res.status(200).send({ message: "Verified success" });
+  }
 };
 
 // logout

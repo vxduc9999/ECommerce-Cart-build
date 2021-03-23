@@ -10,150 +10,34 @@ const db = require("../config/db");
 const { Op } = require("sequelize");
 const moment = require("moment");
 const querystring = require("querystring");
+const crypto = require("crypto");
 
 // show all data
 exports.getHomePage = async (req, res, next) => {
   products
-    .findAll(
-      // new products
-      {
-        limit: 10,
-        order: [["updated_at", "DESC"]],
-      }
-    )
-    .then((productsNew) => {
-      // best love products
-      products
-        .findAll({
-          attributes: {
-            include: [
-              [
-                sequelize.literal(
-                  `(
-                            SELECT COUNT(*) FROM "wishlists" 
-                            WHERE 
-                                "wishlists"."product_id" = "products"."id"
-                        )`
-                ),
-                "totalProduct",
-              ],
-            ],
-          },
-          limit: 10,
-          order: [[sequelize.literal('"totalProduct"'), "DESC"]],
-        })
-        .then((wishlistsProducts) => {
-          // best selling products
-          products
-            .findAll({
-              attributes: {
-                include: [
-                  [
-                    sequelize.literal(
-                      `(
-                                    SELECT COUNT(*) FROM "order_details" 
-                                    WHERE 
-                                        "order_details"."product_id" = "products"."id"
-                                )`
-                    ),
-                    "totalProduct",
-                  ],
-                ],
-              },
-              limit: 10,
-              order: [[sequelize.literal('"totalProduct"'), "DESC"]],
-            })
-            .then((bestSellingProducts) => {
-              const data = {
-                newProducts: productsNew,
-                bestLoveProducts: wishlistsProducts,
-                bestSellingProducts: bestSellingProducts,
-                isAuthenticated: req.session.isLoggedIn,
-              };
-              res.send(data);
-              //   res.status(200).render("homePage", {
-              //     data: data,
-              //     isAuthenticated: req.session.isLoggedIn,
-              //   });
-            })
-            .catch((err) => console.log(err));
-        })
-        .catch((err) => console.log(err));
+    .findAll({ limit: 20 })
+    .then((products) => res.send(products))
+    .catch((err) => console.log(err));
+};
+
+// test pagination
+exports.phone = async (req, res, next) => {
+  let perPage = 10; // qty product in 1 page
+  let page = req.query.p || 1;
+  products
+    .findAndCountAll({
+      limit: perPage,
+      offset: perPage * page - perPage,
+    })
+    .then((products) => {
+      res.status(200).send({ count: products.count, products: products.rows });
     })
     .catch((err) => console.log(err));
 };
 
 exports.getDetailProduct = (req, res, next) => {
-  const user = req.session.user;
+  const user = null;
   const slug = req.params.slug;
-  let perPage = 3; // số lượng sản phẩm xuất hiện trên 1 page
-  let page = req.query.p || 1;
-
-  // products
-  //   .findOne({
-  //     where: {
-  //       product_slug: {
-  //         [Op.eq]: slug,
-  //       },
-  //     },
-  //     include: [
-  //       {
-  //         model: images,
-  //         limit: 4,
-  //       },
-  //       {
-  //         model: users,
-  //         as: "productByComment",
-  //         through: {
-  //           model: product_reviews,
-  //           as: "productByComment",
-  //           attributes: ["comment", "rate", "created_at"],
-  //         },
-  //       },
-  //     ],
-  //   })
-  //   .then((product) => {
-  //     //res.json(product);
-  //     if (product.productByComment.length === 0) {
-  //       return res.status(200).render("products/productDetail", {
-  //         product: product,
-  //         count: 0,
-  //         moment: moment,
-  //       });
-  //     } else {
-  //       product_reviews
-  //         .findAndCountAll({
-  //           where: {
-  //             product_id: {
-  //               [Op.eq]: product.id,
-  //             },
-  //           },
-  //           include: [
-  //             {
-  //               model: users,
-  //             },
-  //           ],
-  //           offset: (page - 1) * perPage,
-  //           limit: perPage,
-  //           order: [["createdAt", "DESC"]],
-  //         })
-  //         .then((product_review) => {
-  //           //res.json(product_review);
-  //           return res.status(200).render("products/productDetail", {
-  //             product: product,
-  //             count: product_review.count,
-  //             product_review: product_review.rows,
-  //             moment: moment,
-  //             current: page,
-  //             pages: Math.ceil(product_review.count / perPage),
-  //           });
-  //         })
-  //         .catch((err) => console.log(err));
-  //     }
-  //   })
-  //   .catch((err) => console.log(err));
-
-  //res.json(page);
 
   // chưa có user
   if (user == null) {
@@ -179,12 +63,7 @@ exports.getDetailProduct = (req, res, next) => {
         ],
       })
       .then((product) => {
-        //res.json(product);
-        res.send(product);
-        // return res.status(200).render("products/productDetail", {
-        //   product,
-        //   moment: moment,
-        // });
+        res.status(200).send(product);
       })
       .catch((err) => console.log(err));
   } else {
@@ -219,25 +98,35 @@ exports.getDetailProduct = (req, res, next) => {
         order: [[{ model: images }, "id", "ASC"]],
       })
       .then((product) => {
-        res.send(product);
-        // return res.status(200).render('products/productDetail', {
-        //     product
-        // });
+        res.status(200).send(product);
       })
       .catch((err) => console.log(err));
   }
 };
 
+// add to cart
 exports.postDetailProduct = async (req, res, next) => {
   const product_id = req.body.product_id;
   const price = req.body.price;
   const quantity = req.body.quantity;
-  const userSession = req.session.user;
-  const order = await orders
+  const user_id = req.body.user_id;
+  let order_number = -1;
+  let tmp = -1;
+  const tko = async () => {
+    while (tmp < 0) {
+      order_number = Math.floor(Math.random() * 99999999) + 2;
+      const koko = await orders.findOne({
+        where: { order_number: order_number },
+      });
+      if (koko == null) tmp = 10;
+    }
+  };
+  await tko();
+  orders
     .findOne({
       where: {
         user_id: {
-          [Op.eq]: userSession.id,
+          [Op.eq]: user_id,
         },
         status: {
           [Op.eq]: null,
@@ -250,8 +139,8 @@ exports.postDetailProduct = async (req, res, next) => {
         orders
           .create({
             // insert order to db
-            order_number: 1234,
-            user_id: userSession.id,
+            order_number: order_number,
+            user_id: user_id,
             total: price * quantity,
           })
           .then((ord) => {
@@ -265,7 +154,7 @@ exports.postDetailProduct = async (req, res, next) => {
                 total: quantity * price,
               })
               .then((result) => {
-                res.redirect("/cart");
+                res.status(200).send("create new order and add to db");
               })
               .catch((err) => console.log(err));
           })
@@ -297,7 +186,7 @@ exports.postDetailProduct = async (req, res, next) => {
                 .then((result) => {
                   order.total = parseInt(order.total) + price * quantity;
                   order.save();
-                  res.redirect("/cart");
+                  res.status(200).send("add product to orderdetail");
                 })
                 .catch((err) => console.log(err));
             } else {
@@ -308,7 +197,7 @@ exports.postDetailProduct = async (req, res, next) => {
 
               order.total = parseInt(order.total) + price * quantity;
               order.save();
-              res.redirect("/cart");
+              res.status(200).send("update quantity product to orderdetail");
             }
           })
           .catch((err) => console.log(err));
