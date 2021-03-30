@@ -106,6 +106,7 @@ exports.getDetailProduct = (req, res, next) => {
 
 // add to cart
 exports.postDetailProduct = async (req, res, next) => {
+  console.log(req.body);
   const product_id = req.body.product_id;
   const price = req.body.price;
   const quantity = req.body.quantity;
