@@ -2,7 +2,6 @@ import "./CartItem.css";
 import { Link } from "react-router-dom";
 
 const CartItem = ({ item, qtyChangeHandler, removeHandler }) => {
-  console.log(`🚀 => file: CartItem.jsx => line 5 => item`, item)
   return (
     <div className="cartitem">
       <div className="cartitem__image">

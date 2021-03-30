@@ -2,21 +2,16 @@
 import PropTypes from 'prop-types';
 import React, { useRef, useState } from 'react';
 import "./search.style.css"
+import { Input } from 'antd';
 
-SearchComponent.propTypes = {
-    onSubmit: PropTypes.func,
-};
-
-SearchComponent.defaultProps = {
-    onSubmit: null
-}
+const { Search } = Input;
 
 function SearchComponent(props) {
     const { onSubmit } = props;
     const [searchTerm, setSearchTerm] = useState('');
     const typingTimeOutRef = useRef(null);
 
-    function handleSearchTermCange(e) {
+    function handleSearchTermChange(e) {
         const value = e.target.value;
         setSearchTerm(value);
         if (!onSubmit) return;
@@ -34,11 +29,12 @@ function SearchComponent(props) {
 
 
     }
+
     return (
         <div className="search_btn">
             <form action="#">
                 <input type="text" value={searchTerm}
-                    onChange={handleSearchTermCange} id="searchName" placeholder="Search Product ...."></input>
+                    onChange={handleSearchTermChange} id="searchName" placeholder="Search Product ...."></input>
                 <button type="submit"><i class="fas fa-search"></i></button>
             </form>
         </div>

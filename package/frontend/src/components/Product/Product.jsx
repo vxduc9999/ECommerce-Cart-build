@@ -7,20 +7,20 @@ const Product = ({ loading, posts }) => {
   }
   return (
     <div className="product">
-      {posts.map(posts => (
+      {posts.map(post => (
         <>
           <div className="product__item" >
 
-            <img src={posts.imageUrl} alt={posts.name} />
+            <img src={post.product_thumbnail} alt={post.product_name} />
 
             <div className="product__info">
-              <p className="info__name">{posts.name}</p>
+              <p className="info__name">{post.product_name}</p>
 
-              <p className="info__description">{posts.description.substring(0, 100)}...</p>
+              <p className="info__description">{post.product_description.substring(0, 100)}...</p>
 
-              <p className="info__price">${posts.price}</p>
+              <p className="info__price">${post.product_price}</p>
 
-              <Link to={`/detail/${posts.product_slug}`} className="info__button">
+              <Link to={`/detail/${post.product_slug}`} className="info__button">
                 View
                   </Link>
             </div>

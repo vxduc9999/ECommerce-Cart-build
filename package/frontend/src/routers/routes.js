@@ -14,6 +14,7 @@ import ViewProductRoute from "./viewProduct.route";
 import LoginScreen from './login.route';
 import RegisterScreen from './register.route';
 import VertifyActiceScreen from '../pages/Auth/VertifyActiceScreen';
+import PhoneRoute from './phone.route';
 
 function Routes() {
 
@@ -25,6 +26,7 @@ function Routes() {
                 <LoginScreen/>
                 <RegisterScreen/>
                 <HomeRoute />
+                <PhoneRoute/>
                 <ProductRoute />
                 <CartRoute />
                 <ViewProductRoute/>

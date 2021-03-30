@@ -33,6 +33,7 @@ exports.getSignin = (req, res, next) => {
 };
 
 exports.postSignin = async (req, res, next) => {
+
   const email = req.body.email;
   const password = req.body.password;
   const user = await User.findOne({ where: { email: email } });

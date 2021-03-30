@@ -5,22 +5,10 @@ import axios from "../configAxios";
 export const getProducts = () => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.GET_PRODUCTS_REQUEST });
-    const { data } = await axios.get("http://localhost:4000/");
-    const actionPayload=data.map(e=>({
-            _id:e.id,
-            name:e.product_name,
-            description:e.product_description,
-            price:e.product_price,
-            imageUrl:e.product_thumbnail,
-            product_slug:e.product_slug
-          }))
-          dispatch({
-            type: actionTypes.GET_PRODUCTS_SUCCESS,
-            payload: actionPayload,
-          });
+    const { data } = await axios.get("/");
     dispatch({
       type: actionTypes.GET_PRODUCTS_SUCCESS,
-      payload: actionPayload,
+      payload: data,
     });
   } catch (error) {
     dispatch({
@@ -32,6 +20,28 @@ export const getProducts = () => async (dispatch) => {
     });
   }
 };
+
+
+// export const getPhone = (p) => async (dispatch) => {
+//   try {
+//     dispatch({ type: actionTypes.GET_PRODUCTS_REQUEST });
+//     const { data } = await axios.get(`/phone?`, { params: { p } });
+
+//     dispatch({
+//       type: actionTypes.GET_PRODUCTS_SUCCESS,
+//       payload: data,
+//     });
+//   } catch (error) {
+//     dispatch({
+//       type: actionTypes.GET_PRODUCTS_FAIL,
+//       payload:
+//         error.response && error.response.data.message
+//           ? error.response.data.message
+//           : error.message,
+//     });
+//   }
+// };
+
 
 export const getProductDetails = (slug) => async (dispatch) => {
   try {

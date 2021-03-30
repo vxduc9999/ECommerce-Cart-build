@@ -1,71 +1,30 @@
-import React, { useEffect, useState } from 'react';
+
 import "../layout.css"
 import "./Header.layout.css"
-import queryString from 'query-string';
 import { Link } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
 import { getLogout } from "../../redux/actions/authActions";
 
 // Components
-import CartItem from "../../components/CartItem/CartItem";
+//import CartItem from "../../components/CartItem/CartItem";
 
 // Actions
-import { removeFromCart, qtyToCart } from "../../redux/actions/cartActions";
-import SearchComponent from '../../components/Search/search.component';
+//import { removeFromCart, qtyToCart } from "../../redux/actions/cartActions";
+import SearchComponent from '../../components/SearchComponent/search.component';
 
-HeaderLayout.propTypes = {
 
-};
 
 function HeaderLayout(props) {
-
-    const [postList, setPostList] = useState([]);
-    const [pagination, setPagination] = useState({
-        _page: 1,
-        _limit: 10,
-        _totalRows: 11,
-
-    });
-    const [filter, setFilter] = useState({
-        limit: 10,
-        _page: 1
-    })
-
-    useEffect(() => {
-        async function fetchPostList() {
-            try {
-                const paramsString = queryString.stringify(filter);
-
-                const requesUrl = `http://js-post-api.herokuapp.com/api/posts?${paramsString}`;
-                const response = await fetch(requesUrl);
-                const responseJSON = await response.json();
-                console.log({ responseJSON });
-
-                const { data, pagination } = responseJSON;
-                setPostList(data);
-                setPagination(pagination);
-            } catch (error) {
-                console.log('fail', error.message);
-            }
-        }
-        fetchPostList();
-    }, [filter])
-    function handleFilterChange(newFilter) {
-        console.log("New Filter:", newFilter);
-        setFilter({
-            ...filter,
-            _page: 1,
-            title_like: newFilter.searchTerm,
-        })
-    }
     const dispatch = useDispatch();
     const cart = useSelector((state) => {
+
         return state.cart
     });
     const { cartItem } = cart;
 
     const users = useSelector((state) => state.users);
+    console.log(`🚀 => file: Header.layout.jsx => line 27 => users`, users)
     const { user, loggedIn } = users;
     const userhandle = (e) => {
         e.preventDefault();
@@ -117,7 +76,6 @@ function HeaderLayout(props) {
                         <li>
                             {loggedIn === true ? (
                                 <Link onClick={(e) => userhandle(e)}>
-
                                     <li><i className="fas fa-sign-out-alt"></i></li>
                                 Logout</Link>
                             ) : (
@@ -125,8 +83,6 @@ function HeaderLayout(props) {
                                     <Link to="/login">Login</Link>
                                     <li> <i className="fas fa-user"></i></li>
                                     <li>
-
-
                                         <Link to="/register">Register</Link>
                                     </li>
                                 </>
@@ -156,7 +112,7 @@ function HeaderLayout(props) {
                                             <li><a href="#">Support</a></li>
 
                                             <li>
-                                                <SearchComponent onSubmit={handleFilterChange} />
+                                                <SearchComponent />
                                             </li>
 
                                         </ul>
@@ -167,7 +123,6 @@ function HeaderLayout(props) {
                     </div>
                 </div>
             </div>
-
         </div >
     );
 }

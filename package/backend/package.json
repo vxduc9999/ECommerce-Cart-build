@@ -7,7 +7,7 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "start-server": "node app.js",
         "dev": "nodemon app.js",
-        "client": "cd ../ && npm start",
+        "client": "cd ../ && cd ../ && yarn workspace @app/frontend start",
         "start": "concurrently \"npm run dev\" \"npm run client\""
     },
     "webdriver-update": "./node_modules/protractor/bin/webdriver-manager update",

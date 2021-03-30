@@ -4,10 +4,11 @@ import axios from "../configAxios";
 export const getLogin = (email, password) => async (dispatch, getState) => {
   try {
     dispatch({ type: actionTypes.LOGIN_REQUEST });
-    const { data } = await axios.post("/login", {
+    const { data } = await axios.post("/signin", {
       email: email,
       password: password,
     });
+    console.log(`🚀 => file: authActions.js => line 11 => data`, data)
 
     dispatch({
       type: actionTypes.LOGIN_SUCCESS,
@@ -16,8 +17,8 @@ export const getLogin = (email, password) => async (dispatch, getState) => {
         loggedIn: true,
       },
     });
-
     localStorage.setItem("users", JSON.stringify(getState().users));
+    
   } catch (error) {
     dispatch({
       type: actionTypes.LOGIN_FAIL,
@@ -39,17 +40,17 @@ export const getLogout = () => async (dispatch, getState) => {
     },
   });
 
-  localStorage.setItem("users", JSON.stringify(getState().users));
 };
 
 export const getRegister = (email, password) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.REGISTER_REQUEST });
-    const { data } = await axios.post("/register", {
+    const { data } = await axios.post("/signup", {
       url: "http://localhost:3000",
       email:email ,
       password: password,
     });
+    console.log(`🚀 => file: authActions.js => line 53 => data`, data)
 
     dispatch({
       type: actionTypes.REGISTER_SUCCESS,

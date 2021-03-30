@@ -1,24 +1,26 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import "./auth.style.css"
-
+import axios from "../../redux/configAxios"
 // Actions
 import { getLogin } from "../../redux/actions/authActions";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const loggedIn = useSelector((state) => state.users.loggedIn);
 
   const dispatch = useDispatch();
 
   let history = useHistory();
-  const loginHandler = (e) => {
+  const loginHandler = async (e) => {
     e.preventDefault();
-    history.goBack();
     dispatch(getLogin(email, password));
+    loggedIn && history.push("/");
   };
+
 
   return (
     <div id="container">
