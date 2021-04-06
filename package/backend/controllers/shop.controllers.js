@@ -245,7 +245,7 @@ exports.search = async (req, res, next) => {
       },
     },
   });
-
+  console.log(response.hits.hits);
   res.send(response.hits.hits);
 };
 
