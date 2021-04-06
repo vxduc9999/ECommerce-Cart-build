@@ -6,8 +6,7 @@ import { getLogout } from "../../redux/actions/authActions";
 const Navbar = () => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => {
-
-    return state.cart
+    return state.cart;
   });
   const { cartItem } = cart;
 
@@ -26,7 +25,9 @@ const Navbar = () => {
       <ul className="navbar__links">
         <li>
           <div className="wishlist_btn">
-            <a href="/user/wishlist"><i class="fas fa-heart"></i></a>
+            <a href="/user/wishlist">
+              <i class="fas fa-heart"></i>
+            </a>
           </div>
         </li>
 
@@ -48,7 +49,6 @@ const Navbar = () => {
             </span>
           </Link>
         </li>
-
         <li>
           <Link to="/">Shop</Link>
         </li>

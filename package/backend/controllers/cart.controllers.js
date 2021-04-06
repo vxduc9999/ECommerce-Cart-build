@@ -5,8 +5,8 @@ const { Op } = require("sequelize");
 
 // get cart page
 exports.getCart = async (req, res, next) => {
-  const user_id = req.body.user_id;
-  await Order.findOne({
+  const user_id = req.query.user_id;
+  Order.findOne({
     where: {
       user_id: {
         [Op.eq]: user_id,
@@ -27,7 +27,7 @@ exports.getCart = async (req, res, next) => {
   })
     .then((order) => {
       if (order == null) {
-        res.status(200).send({ message: "Nothing cart" });
+        res.status(404).send({ message: "Nothing cart" });
       } else {
         res.status(200).send(order);
       }
@@ -50,6 +50,7 @@ exports.subQuantity = async (req, res, next) => {
       product_id: product_id,
     },
   });
+
   // 14 - 12 = 2
   const diff = parseInt(order_detail.quantity) - quantity;
   order_detail.quantity = quantity; // 12
@@ -74,6 +75,7 @@ exports.plusQuantity = async (req, res, next) => {
   const order_detail_id = req.body.order_detail_id;
   const product_id = req.body.product_id;
   const quantity = parseInt(req.body.quantity);
+  console.log(quantity);
   // update order_detail
   const order_detail = await Order_detail.findOne({
     where: {
@@ -147,15 +149,14 @@ exports.pay = async (req, res, next) => {
   const name = req.body.name;
   const address = req.body.address;
   const phone = req.body.phone;
-  const payment_method = req.body.payment_method;
 
   const order = await Order.findOne({
     where: {
       id: order_id,
     },
   });
-
-  order.payment_method = payment_method;
+  ///mac dinh tien mac
+  order.payment_method = 1;
   order.status = 1;
   order.fullname = name;
   order.email = email_user;
