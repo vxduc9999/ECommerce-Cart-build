@@ -81,7 +81,7 @@ exports.plusQuantity = async (req, res, next) => {
       product_id: product_id,
     },
   });
-  const diff = quantity - order_detail.quantity;
+  const diff = quantity - parseInt(order_detail.quantity);
   order_detail.quantity = quantity;
   order_detail.total = quantity * order_detail.price;
 

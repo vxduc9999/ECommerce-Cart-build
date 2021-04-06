@@ -11,6 +11,7 @@ const { Op } = require("sequelize");
 const moment = require("moment");
 const querystring = require("querystring");
 const crypto = require("crypto");
+const client = require("../config/connect");
 
 // show all data
 exports.getHomePage = async (req, res, next) => {
@@ -122,7 +123,7 @@ exports.postDetailProduct = async (req, res, next) => {
     }
   };
   await tko();
-  orders
+  await orders
     .findOne({
       where: {
         user_id: {
@@ -143,7 +144,7 @@ exports.postDetailProduct = async (req, res, next) => {
             user_id: user_id,
             total: price * quantity,
           })
-          .then((ord) => {
+          .then(async (ord) => {
             order_details
               .create({
                 // insert to order_detail
@@ -230,3 +231,42 @@ exports.getSearch = async (req, res, next) => {
     })
     .catch((err) => console.log(err));
 };
+
+exports.search = async (req, res, next) => {
+  const response = await client.search({
+    index: "products",
+    type: "_doc",
+    body: {
+      size: 4,
+      from: 1,
+      query: {
+        match: { product_slug: "Phône" },
+      },
+    },
+  });
+
+  res.send(response.hits.hits);
+};
+
+// search exact string
+// exports.search = async (req, res, next) => {
+//   const response = await client.search({
+//     index: "products",
+//     type: "_doc",
+//     body: {
+//       query: {
+//         bool: {
+//           must: [
+//             {
+//               terms: {
+//                 "product_slug.keyword": ["dien-thoai-iphone-12-pro-max-512gb"],
+//               },
+//             },
+//           ],
+//         },
+//       },
+//     },
+//   });
+
+//   res.send(response.hits.hits);
+// };
