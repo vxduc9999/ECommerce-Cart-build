@@ -140,7 +140,11 @@ function HeaderLayout(props) {
                 </span>
               </Link>
             </li>
-
+            <li>
+              <Link to="/order" className="cart__links">
+                <span>Order</span>
+              </Link>
+            </li>
             {/* <li>
                             
                         </li> */}

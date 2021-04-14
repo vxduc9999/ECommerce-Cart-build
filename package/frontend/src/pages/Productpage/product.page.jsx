@@ -44,7 +44,7 @@ const ProductScreen = ({ match, history }) => {
     );
     setTimeout(() => {
       history.push("/cart");
-    }, 200);
+    }, 300);
   };
 
   const handleClickImagesItem = (name) => {

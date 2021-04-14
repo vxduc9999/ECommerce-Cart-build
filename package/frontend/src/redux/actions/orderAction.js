@@ -1,21 +1,27 @@
 import * as actionTypes from "../constants/oderConstants";
-import axios from "axios";
+import axios from "../configAxios";
 
-export const addToOder = (slug, qty) => async (dispatch, getState) => {
-  const { data } = await axios.get(`/cart/${slug}`);
-  dispatch({
-    type: actionTypes.ADD_TO_ODER,
-    payload: {
-      product: data.id,
-      name: data.product_name,
-      imageUrl: data.product_thumbnail,
-      price: data.product_price,
-      countInStock: data.product_quantity,
-      slug: data.product_slug,
-      qty,
+export const addToOder = (order_id) => async (dispatch, getState) => {
+  const { data } = await axios.post(`/pay`, {
+    email_user: " @@@",
+    order_id: order_id,
+    name: "asd ",
+    address: " asd",
+    phone: " 000",
+  });
+};
+
+export const getOrder = (user_id) => async (dispatch, getState) => {
+  const { data } = await axios.get(`/user/order-list`, {
+    params: {
+      user_id: user_id,
     },
   });
-  localStorage.setItem("oder", JSON.stringify(getState().oder.oderItem));
+
+  dispatch({
+    type: actionTypes.ADD_TO_ODER,
+    payload: data,
+  });
 };
 
 export const removeFromOrder = (id) => async (dispatch, getState) => {

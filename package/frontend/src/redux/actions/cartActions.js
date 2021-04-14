@@ -12,6 +12,11 @@ export const addToCart = (slug, qty, id, price) => async (
     user_id: 1,
   });
 };
+export const checkoutCart = () => async (dispatch, getState) => {
+  dispatch({
+    type: actionTypes.CHECKOUT_TO_CART,
+  });
+};
 
 export const getCart = (user_id) => async (dispatch, getState) => {
   const { data } = await axios.get(`/cart`, {

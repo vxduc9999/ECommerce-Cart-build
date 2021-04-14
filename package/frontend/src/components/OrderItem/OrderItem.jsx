@@ -2,18 +2,21 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./OrderItem.css";
 
-function OrderItem(props) {
+function OrderItem({ item }) {
   return (
     <div className="oderItem">
       <div className="oderItem__image">
-        <img src="../img/256331.jpg" alt="product_name"></img>
+        <img
+          src={`../${item.product.product_thumbnail}`}
+          alt="product_name"
+        ></img>
       </div>
       <Link className="oderItem__name">
-        <p>name</p>
+        <p>{item.product.product_name}</p>
       </Link>
-      <p>qty: 11</p>
+      <p>qty: {item.quantity}</p>
 
-      <p className="oderItem__price">priceVND</p>
+      <p className="oderItem__price">{item.product.product_price}VND</p>
     </div>
   );
 }

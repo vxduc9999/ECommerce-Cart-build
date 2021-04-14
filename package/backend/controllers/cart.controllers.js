@@ -146,6 +146,7 @@ exports.delProduct = async (req, res, next) => {
 exports.pay = async (req, res, next) => {
   const email_user = req.body.email_user;
   const order_id = req.body.order_id;
+  console.log(order_id);
   const name = req.body.name;
   const address = req.body.address;
   const phone = req.body.phone;

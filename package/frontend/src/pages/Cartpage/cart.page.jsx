@@ -2,6 +2,7 @@ import "./cart.style.css";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { FormGroup, Label, Input, Form } from "reactstrap";
+import { useHistory } from "react-router-dom";
 import React from "react";
 // Components
 import CartItem from "../../components/CartItem/CartItem";
@@ -11,21 +12,23 @@ import {
   qtyToCart,
   addToCart,
   getCart,
+  checkoutCart,
 } from "../../redux/actions/cartActions";
 import { useEffect, useState } from "react";
-
 import { addToOder } from "../../redux/actions/orderAction";
 
 const CartScreen = ({ history }) => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const { loading, error, cartItem, total } = cart;
-  //console.log("cart", cart);
+  console.log("🚀 ----------------------------------------------");
+  console.log("🚀 ~ file: cart.page.jsx ~ line 24 ~ cart", cart);
+  console.log("🚀 ----------------------------------------------");
+
   useEffect(() => {
     dispatch(getCart(1));
   }, [dispatch]);
   const qtyChangeHandler = (id, product_id, quantity, check, price) => {
-    //console.log("t", total, price);
     dispatch(
       qtyToCart(
         id,
@@ -37,7 +40,6 @@ const CartScreen = ({ history }) => {
       )
     );
   };
-
   const removeHandler = (id, rmvtotal) => {
     dispatch(removeFromCart(id, parseInt(total), parseInt(rmvtotal)));
   };
@@ -58,9 +60,12 @@ const CartScreen = ({ history }) => {
 
     return date;
   };
+
+  history = useHistory();
   const addToOderHandler = () => {
-    //dispatch(addToOder(id, qty));
-    history.push("/");
+    dispatch(addToOder(cartItem[0].order_id));
+    history.push("/order");
+    dispatch(checkoutCart());
   };
   ///////////ValidForm
   return (

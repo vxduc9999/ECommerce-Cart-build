@@ -201,14 +201,10 @@ exports.postChangePassword = async (req, res, next) => {
 };
 
 exports.orderList = async (req, res, next) => {
-  const user = req.session.user;
-  if (user == null) {
-    req.session.currentPage = "orderList";
-    return res.redirect("/signin");
-  }
+  const user_id = req.query.user_id;
   await Order.findAll({
     where: {
-      user_id: user.id,
+      user_id: user_id,
       status: {
         [Op.not]: null,
       },
@@ -234,9 +230,7 @@ exports.orderList = async (req, res, next) => {
     ],
   })
     .then((result) => {
-      res.status(200).render("auth/listpurchase", {
-        orders: result,
-      });
+      res.status(200).send(result);
     })
     .catch((err) => console.log(err));
 };
