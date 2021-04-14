@@ -5,28 +5,30 @@ a {
   max-width: 900px;
   margin: 0 auto;
   background-color: white;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }
-.oderscreen > div {
+.OrderScreen__navItem {
+  box-shadow: 0 1px 4px rgb(0 0 0 / 40%);
+}
+.OrderScreen > div {
   margin-top: 1rem;
 }
-.oderscreen h2 {
+.OrderScreen h2 {
   font-size: 2rem;
   font-weight: bold;
   padding: 1rem 0rem 1rem 1rem;
 }
 
-.oderscreen__navItem .nav-tabs {
+.OrderScreen__navItem .nav-tabs {
   border-bottom: 1px solid #332e2e !important;
 }
-.oderscreen__navItem .active {
+.OrderScreen__navItem .active {
   border-bottom: 4px solid #012029 !important;
   color: #012029;
 }
 .tab-content > .active {
   background-color: white !important;
 }
-.oderscreen__navItem .nav-link {
+.OrderScreen__navItem .nav-link {
   color: black;
   text-align: center;
   width: 120px;
@@ -35,22 +37,23 @@ a {
   border-left: none !important;
 }
 
-.oderscreen__tab1 {
-  border-bottom: 1px solid #5a5555;
+.OrderScreen__tab1 {
+  box-shadow: 0 1px 4px rgb(0 0 0 / 40%);
+  margin-bottom: 1rem;
 }
-.oderscreen__tab1__info {
+.OrderScreen__tab1__info {
   margin-left: 1rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
-.oderscreen__tab1__info span p {
+.OrderScreen__tab1__info span p {
   margin-left: 0.5rem;
 }
 
-.oderscreen__tab1__info__right {
+.OrderScreen__tab1__info__right {
   margin-right: 1rem;
   justify-self: end;
 }
-.oderscreen__tab1__info__right p {
+.OrderScreen__tab1__info__right p {
   text-align: right;
 }

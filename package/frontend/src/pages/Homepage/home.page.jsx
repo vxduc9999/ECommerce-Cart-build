@@ -5,14 +5,16 @@ import axios from "../../redux/configAxios"
 import queryString from "query-string"
 
 // Components
-import SliderComponent from "../../components/Slider/Slider.component"
+import SliderComponent from "../../components/Slider/Slider.component";
 import Product from "../../components/Product/Product";
-import Pagination from "../../components/Pagination/Pagination"
+import Pagination from "../../components/Pagination/Pagination";
 
 //Actions
 import { getProducts as listProducts } from "../../redux/actions/productActions";
 
 const HomeScreen = () => {
+  //home
+  const dispatch = useDispatch();
 
     const dispatch = useDispatch();
     const [post, setPosts] = useState([]);

@@ -9,9 +9,11 @@ import {
   getProductsDetailReducer,
 } from "./reducers/productReducers";
 import { loginReducer, registerReducer } from "./reducers/authReducers";
+import { oderReducers } from "./reducers/orderReduces";
 
 const reducer = combineReducers({
   cart: cartReducer,
+  order: oderReducers,
   getProducts: getProductsReducer,
   getProductDetails: getProductsDetailReducer,
   users: loginReducer,

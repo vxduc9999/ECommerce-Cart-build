@@ -2,14 +2,22 @@ import * as actionTypes from "../constants/cartConstants";
 
 export const cartReducer = (state = { cartItem: [] }, action) => {
   switch (action.type) {
+    case actionTypes.CHECKOUT_TO_CART:
+      return {
+        ...state,
+        cartItem: [],
+      };
+
     case actionTypes.ADD_TO_CART:
       const item = action.payload;
+
       return {
         ...state,
         loading: false,
         cartItem: item.details.map((x) => {
           return x;
         }),
+
         total: item.total,
       };
 
@@ -17,7 +25,7 @@ export const cartReducer = (state = { cartItem: [] }, action) => {
       const it = action.payload;
 
       const product = state.cartItem.find((x) => x.id === it.product);
-      console.log("it", product);
+      //console.log("it", product);
       return {
         ...state,
         cartItem: state.cartItem.map((x) => {

@@ -32,6 +32,7 @@ exports.getSignin = (req, res, next) => {
   });
 };
 
+// done
 exports.postSignin = async (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -60,6 +61,7 @@ exports.getSignup = (req, res, next) => {
 };
 
 // post signup with send mail verify
+// done
 exports.postSignup = async (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -109,9 +111,14 @@ exports.getVerifyEmail = (req, res, next) => {
 };
 
 // verify email
+<<<<<<< HEAD
 exports.postVerifyEmail = async (req, res, next) => {
   const token = req.params.activation_token;
   const email = req.body.email;
+=======
+exports.getVerifyEmail = async (req, res, next) => {
+  const token = req.params.token;
+>>>>>>> 145c805ad623043bcf52cd18c4dbae4704fb2141
   const user = await User.findOne({
     where: {
       email: email
@@ -147,16 +154,16 @@ function makeid(length) {
   return result;
 }
 
+// done
 exports.postForgotPassword = async (req, res, next) => {
   const email = req.body.email;
   const user = await User.findOne({ where: { email: email } });
   if (!user)
-    // not valid email
-    res.redirect("/forgot-password");
+    return res.status(404).send({
+      message: "email not exist",
+    });
   else {
     const code = makeid(6);
-    req.session.code = code;
-    req.session.email = email;
     const msg = {
       to: email, // Change to your recipient
       from: "myshopuwp@gmail.com", // Change to your verified sender
@@ -164,6 +171,7 @@ exports.postForgotPassword = async (req, res, next) => {
       text: `passcode`,
       html: `<p>Code:${code}</p>`,
     };
+<<<<<<< HEAD
       transporter.sendMail(msg, async (err, info) => {
         if (err) console.log(err);
         else {
@@ -172,6 +180,17 @@ exports.postForgotPassword = async (req, res, next) => {
           });
         }
       });
+=======
+    transporter.sendMail(msg, async (err, info) => {
+      if (err) console.log(err);
+      else {
+        return res.status(200).send({
+          message: "Send mail success!. Please check your mail to get code",
+          code: code,
+        });
+      }
+    });
+>>>>>>> 145c805ad623043bcf52cd18c4dbae4704fb2141
   }
 };
 
@@ -192,7 +211,9 @@ exports.getChangePassword = (req, res, next) => {
   res.status(200).render("auth/resetPassword");
 };
 
+// done
 exports.postChangePassword = async (req, res, next) => {
+  const email = req.body.email;
   const password = req.body.password;
   const comfirmPassword = req.body.comfirmPassword;
   const email=req.session.email;
@@ -211,15 +232,12 @@ exports.postChangePassword = async (req, res, next) => {
   }
 };
 
+// done
 exports.orderList = async (req, res, next) => {
-  const user = req.session.user;
-  if (user == null) {
-    req.session.currentPage = "orderList";
-    return res.redirect("/signin");
-  }
+  const user_id = req.query.user_id;
   await Order.findAll({
     where: {
-      user_id: user.id,
+      user_id: user_id,
       status: {
         [Op.not]: null,
       },
@@ -245,15 +263,14 @@ exports.orderList = async (req, res, next) => {
     ],
   })
     .then((result) => {
-      res.status(200).render("auth/listpurchase", {
-        orders: result,
-      });
+      res.status(200).send(result);
     })
     .catch((err) => console.log(err));
 };
 
+//
 exports.postLoveProduct = async (req, res, next) => {
-  const user = req.session.user;
+  const user_id = req.body.user_id;
   const product_id = req.body.product_id;
   const val = req.body.val;
   let result = "";
@@ -294,15 +311,12 @@ exports.postLoveProduct = async (req, res, next) => {
   }
 };
 
+// done
 exports.getWistlist = async (req, res, next) => {
-  const user = req.session.user;
-  if (user == null) {
-    req.session.currentPage = "wistlist";
-    return res.redirect("/signin");
-  }
+  const user_id = req.body.user_id;
   User.findAll({
     where: {
-      id: user.id,
+      id: user_id,
     },
     attributes: [],
     include: [
@@ -316,13 +330,12 @@ exports.getWistlist = async (req, res, next) => {
     ],
   })
     .then((wistlist) => {
-      return res.status(200).render("products/wishlists", {
-        wistlist,
-      });
+      return res.status(200).send(wistlist);
     })
     .catch((err) => console.log(err));
 };
 
+// done
 exports.postDelWish = (req, res, next) => {
   const wish_id = req.body.wish_id;
   Wishlist.destroy({
@@ -331,12 +344,7 @@ exports.postDelWish = (req, res, next) => {
     },
   })
     .then((wistlist) => {
-      //res.json(wistlist);
-      var response = {
-        status: 200,
-        success: "Del Successfully",
-      };
-      res.end(JSON.stringify(response));
+      return res.status(200).send({ message: "unLove successfully" });
     })
     .catch((err) => console.log(err));
 };

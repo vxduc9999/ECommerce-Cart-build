@@ -3,6 +3,13 @@
   grid-template-columns: 1fr 3fr 1fr 1.5fr;
   gap: 8px;
   place-items: top;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
   padding: 1rem;
+}
+.oderItem:last-child {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+.oderItem__price {
+  text-align: right;
+  margin-right: 3rem;
 }
