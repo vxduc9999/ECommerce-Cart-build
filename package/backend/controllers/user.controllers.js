@@ -32,6 +32,7 @@ exports.getSignin = (req, res, next) => {
   });
 };
 
+// done
 exports.postSignin = async (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -55,6 +56,7 @@ exports.getSignup = (req, res, next) => {
 };
 
 // post signup with send mail verify
+// done
 exports.postSignup = async (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -98,7 +100,6 @@ exports.postSignup = async (req, res, next) => {
 // verify email
 exports.getVerifyEmail = async (req, res, next) => {
   const token = req.params.token;
-  console.log(token);
   const user = await User.findOne({
     where: {
       status: token,
@@ -137,16 +138,16 @@ function makeid(length) {
   return result;
 }
 
+// done
 exports.postForgotPassword = async (req, res, next) => {
   const email = req.body.email;
   const user = await User.findOne({ where: { email: email } });
   if (!user)
-    // not valid email
-    res.redirect("/forgot-password");
+    return res.status(404).send({
+      message: "email not exist",
+    });
   else {
     const code = makeid(6);
-    req.session.code = code;
-    req.session.email = email;
     const msg = {
       to: email, // Change to your recipient
       from: "ducga079099@gmail.com", // Change to your verified sender
@@ -154,15 +155,15 @@ exports.postForgotPassword = async (req, res, next) => {
       text: `passcode`,
       html: `<p>Code:${code}</p>`,
     };
-    sgMail
-      .send(msg)
-      .then(() => {
-        console.log("Email sent");
-        return res.status(200).redirect("/import-code");
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    transporter.sendMail(msg, async (err, info) => {
+      if (err) console.log(err);
+      else {
+        return res.status(200).send({
+          message: "Send mail success!. Please check your mail to get code",
+          code: code,
+        });
+      }
+    });
   }
 };
 
@@ -183,23 +184,18 @@ exports.getChangePassword = (req, res, next) => {
   res.status(200).render("auth/resetPassword");
 };
 
+// done
 exports.postChangePassword = async (req, res, next) => {
+  const email = req.body.email;
   const password = req.body.password;
-  const comfirmPassword = req.body.comfirmPassword;
-  if (
-    password.trim() !== "" &&
-    comfirmPassword.trim() !== "" &&
-    password === comfirmPassword
-  ) {
-    const user = await User.findOne({ where: { email: req.session.email } });
-    user.password = bcrypt.hashSync(password, 12);
-    await user.save();
-    delete req.session.email;
-    delete req.session.code;
-    return res.status(200).redirect("/");
-  }
+
+  const user = await User.findOne({ where: { email: email } });
+  user.password = bcrypt.hashSync(password, 12);
+  await user.save();
+  return res.status(200).send({ message: "Change password successfully" });
 };
 
+// done
 exports.orderList = async (req, res, next) => {
   const user_id = req.query.user_id;
   await Order.findAll({
@@ -235,8 +231,9 @@ exports.orderList = async (req, res, next) => {
     .catch((err) => console.log(err));
 };
 
+//
 exports.postLoveProduct = async (req, res, next) => {
-  const user = req.session.user;
+  const user_id = req.body.user_id;
   const product_id = req.body.product_id;
   const val = req.body.val;
   let result = "";
@@ -277,15 +274,12 @@ exports.postLoveProduct = async (req, res, next) => {
   }
 };
 
+// done
 exports.getWistlist = async (req, res, next) => {
-  const user = req.session.user;
-  if (user == null) {
-    req.session.currentPage = "wistlist";
-    return res.redirect("/signin");
-  }
+  const user_id = req.body.user_id;
   User.findAll({
     where: {
-      id: user.id,
+      id: user_id,
     },
     attributes: [],
     include: [
@@ -299,13 +293,12 @@ exports.getWistlist = async (req, res, next) => {
     ],
   })
     .then((wistlist) => {
-      return res.status(200).render("products/wishlists", {
-        wistlist,
-      });
+      return res.status(200).send(wistlist);
     })
     .catch((err) => console.log(err));
 };
 
+// done
 exports.postDelWish = (req, res, next) => {
   const wish_id = req.body.wish_id;
   Wishlist.destroy({
@@ -314,12 +307,7 @@ exports.postDelWish = (req, res, next) => {
     },
   })
     .then((wistlist) => {
-      //res.json(wistlist);
-      var response = {
-        status: 200,
-        success: "Del Successfully",
-      };
-      res.end(JSON.stringify(response));
+      return res.status(200).send({ message: "unLove successfully" });
     })
     .catch((err) => console.log(err));
 };
