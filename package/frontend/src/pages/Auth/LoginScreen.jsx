@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import "./auth.style.css"
-import axios from "../../redux/configAxios"
 // Actions
 import { getLogin } from "../../redux/actions/authActions";
 
@@ -11,20 +10,19 @@ const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const loggedIn = useSelector((state) => state.users.loggedIn);
-
   const dispatch = useDispatch();
 
   let history = useHistory();
-  const loginHandler = async (e) => {
+  if(loggedIn===true){
+    history.push('/');
+  }
+  const loginHandler = (e) => {
     e.preventDefault();
     dispatch(getLogin(email, password));
-    loggedIn && history.push("/");
   };
-
-
+  
   return (
     <div id="container">
-
       <div class="form-container ">
         <form onSubmit={(e) => loginHandler(e)} class="sign-in-container form">
           <h1 class="title">Sign in</h1>
@@ -42,7 +40,7 @@ const LoginScreen = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)} />
           </div>
-          <a href="#">Forgot your password?</a>
+          <a href="/forgot-password">Forgot your password?</a>
           <button className="button" type="submit">Sign In</button>
           <p class="social-text">Or login using other social platforms</p>
           <div class="social-container">

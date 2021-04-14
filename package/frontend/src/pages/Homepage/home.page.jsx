@@ -16,8 +16,8 @@ const HomeScreen = () => {
 
     const dispatch = useDispatch();
     const [post, setPosts] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);  
-    const postsPerPage = 10;
+    const [currentPage, setCurrentPage] = useState(1);
+    const postsPerPage = 8;
     const productDetails = useSelector((state) => state.getProducts);
 
     const { loading, error, products } = productDetails;
@@ -36,6 +36,7 @@ const HomeScreen = () => {
 
     return (
         <div className="homescreen">
+            <SliderComponent/>
             <h2 className="homescreen__title">Latest Products</h2>
             <div className="homescreen__products">
                 {loading ? (

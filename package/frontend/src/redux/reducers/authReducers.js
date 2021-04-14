@@ -8,7 +8,6 @@ export const loginReducer = (state = { user: {} }, action) => {
       };
     case actionTypes.LOGIN_SUCCESS:
       {
-        localStorage.setItem("xnxx",".com")
         return action.payload;
 
       }

@@ -6,29 +6,26 @@ import axios from "../../redux/configAxios"
 // Actions
 
 import Product from "../../components/Product/Product";
-import { getProducts as listProducts } from "../../redux/actions/productActions";
+import { getPhone } from "../../redux/actions/productActions";
 import Pagination from "../../components/Pagination/Pagination"
 
 const PhonePage = ({ match, history }) => {
     const dispatch = useDispatch();
     const [post, setPosts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const postsPerPage = 10;
-    const productDetails = useSelector((state) => state.getProducts);
+    const [postsPerPage, setpostsPerPage] = useState(0);
+    const productPhone = useSelector((state) => state.getProducts);
 
-    const { loading, error, products } = productDetails;
+    const { loading, error, products } = productPhone;
     useEffect(() => {
         const fetchPosts = async () => {
-
             const res = await axios.get(`/phone?`, { params: { p: currentPage } });
             const a = res.data
+            setpostsPerPage(a.products.length);
             setPosts(a.products);
-
         };
         fetchPosts();
-        dispatch(listProducts())
     }, [dispatch]);
-
 
 
     // Get current posts

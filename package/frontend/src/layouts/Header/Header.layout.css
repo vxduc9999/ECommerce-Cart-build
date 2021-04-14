@@ -1,5 +1,15 @@
 /* --------------- header ----------------- */
-
+.dropdown{
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+.isAuth{
+    color: white;
+}
+.isAuth:hover{
+    color: #4481eb;
+}
 #top {
     display: flex;
     justify-content: space-between;
@@ -19,15 +29,11 @@
 }
 
 #top-left ul li a {
-    color: #ffffff;
+    color: #ebebeb;
 }
 
 #top-left ul li a:hover {
     color: #4481eb;
-}
-
-#top-right ul {
-    color: #ffffff;
 }
 
 #top-right{
@@ -41,7 +47,7 @@
 }
 
 #top-right ul li a {
-    color: #ffffff;
+    color: black;
 }
 
 #top-right ul li a:hover {
@@ -52,15 +58,18 @@
 
 /* ************************ Header Bottom ******************** */
 
-.header_bottom {
-    height: 55px;
-    background-color: #f0f0f0;
-}
-
-
 .main_menu_inner {
+    min-width: 100%;
+    overflow: hidden;
+    background-color:white;
+    z-index: 99;
     height: 60px;
     text-align: center;
+    box-shadow: 2px 2px 2px 2px #c5d9fc;
+    -moz-box-shadow: 2px 2px 2px 2px #c5d9fc;
+    -webkit-box-shadow: 2px 2px 2px 2px #c5d9fc;
+    -o-box-shadow: 2px 2px 2px 2px #c5d9fc;
+    -ms-box-shadow: 2px 2px 2px 2px #c5d9fc;
 }
 
 .main_menu nav>ul>li {
@@ -90,7 +99,6 @@
     position: absolute;
     min-width: 200px;
     padding: 30px 25px;
-    background: #fff;
     border: 1px solid #ebebeb;
     transform: perspective(600px) rotateX(-90deg);
     transform-origin: 0 0 0;
@@ -142,7 +150,6 @@
     position: absolute;
     min-width: 580px;
     padding: 30px 25px 35px;
-    background: #fff;
     border: 1px solid #ebebeb;
     transform: perspective(600px) rotateX(-90deg);
     transform-origin: 0 0 0;
@@ -200,7 +207,7 @@
 }
 
 .header_black .main_menu nav>ul>li>a {
-    color: #ffffff;
+    color: black;
     font-family: serif;
     font-weight: 400;
     text-transform: capitalize;
@@ -213,7 +220,7 @@
 }
 
 .header_black .main_menu nav>ul>li ul.sub_menu li a {
-    color: #ffffff;
+    color: black;
     font-family: serif;
 }
 
@@ -227,7 +234,7 @@
 }
 
 .header_black .main_menu nav>ul>li ul.mega_menu>li>a {
-    color: #ffffff;
+    color: black;
     font-family: serif;
 }
 
@@ -236,7 +243,7 @@
 }
 
 .header_black .main_menu nav>ul>li ul.mega_menu>li ul li a {
-    color: #ffffff;
+    color: black;
 }
 
 .header_black .main_menu nav>ul>li ul.mega_menu>li ul li a:hover {

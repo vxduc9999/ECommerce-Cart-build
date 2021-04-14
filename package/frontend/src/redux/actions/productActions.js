@@ -1,7 +1,6 @@
 import * as actionTypes from "../constants/productConstants";
 import axios from "../configAxios";
 
-
 export const getProducts = () => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.GET_PRODUCTS_REQUEST });
@@ -22,25 +21,25 @@ export const getProducts = () => async (dispatch) => {
 };
 
 
-// export const getPhone = (p) => async (dispatch) => {
-//   try {
-//     dispatch({ type: actionTypes.GET_PRODUCTS_REQUEST });
-//     const { data } = await axios.get(`/phone?`, { params: { p } });
+export const getPhone = (p) => async (dispatch) => {
+  try {
+    dispatch({ type: actionTypes.GET_PRODUCTS_REQUEST });
+    const { data } = await axios.get(`/phone?p=`, { params: { p } });
 
-//     dispatch({
-//       type: actionTypes.GET_PRODUCTS_SUCCESS,
-//       payload: data,
-//     });
-//   } catch (error) {
-//     dispatch({
-//       type: actionTypes.GET_PRODUCTS_FAIL,
-//       payload:
-//         error.response && error.response.data.message
-//           ? error.response.data.message
-//           : error.message,
-//     });
-//   }
-// };
+    dispatch({
+      type: actionTypes.GET_PRODUCTS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: actionTypes.GET_PRODUCTS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
 
 
 export const getProductDetails = (slug) => async (dispatch) => {

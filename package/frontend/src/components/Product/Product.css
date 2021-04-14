@@ -1,16 +1,17 @@
 .product {
-  max-width: 1300px;
-  margin: 1rem auto;
+  width: 100%;
   display: grid;
-    grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   justify-content: space-between;
 }
-
+a {
+  text-decoration: none;
+}
 
 .product__item {
   background-color:white;
   border-radius: 10px;
-  width: 300px;
+  width: 270px;
   padding: 2rem;
   margin: 12px;
 }
@@ -40,7 +41,6 @@
 
 .info__name {
   font-size: 1rem;
-  overflow: hidden;
   height: 50px;
 }
 
@@ -61,6 +61,7 @@
 	letter-spacing: 1px;
 	transition: all 80ms ease-in;
 	cursor: pointer;
+  text-decoration: none;
 }
 
 .info__button:hover{

@@ -33,14 +33,18 @@ exports.getSignin = (req, res, next) => {
 };
 
 exports.postSignin = async (req, res, next) => {
-
   const email = req.body.email;
   const password = req.body.password;
+
   const user = await User.findOne({ where: { email: email } });
   if (user) {
     await bcrypt.compare(password, user.password, (err, result) => {
       if (result) {
-        return res.status(200).send(user);
+        if(user.status===null)
+        {
+          return res.status(200).send(user);
+        }
+        return res.status(404).send({ message: "Vui lòng xác nhận email!" });
       } else {
         return res.status(404).send({ message: "Password wrong!" });
       }
@@ -59,7 +63,8 @@ exports.getSignup = (req, res, next) => {
 exports.postSignup = async (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
-  const url = req.body.url;
+  const fullname=req.body.fullname;
+  const url = 'localhost:3000';
   const emailToken = crypto.randomBytes(64).toString("hex");
   const user = await User.findOne({
     where: {
@@ -75,7 +80,7 @@ exports.postSignup = async (req, res, next) => {
       subject: "Sending with SendGrid is Fun",
       text: `${url}/verify-email/${emailToken}`,
       html: `<p>Please click the link below to verify your account</p>
-                            <a href="${url}/verify-email/${emailToken}">
+                            <a href="http://localhost:3000/verify-email/${emailToken}">
                             Verify your account
                             </a>
                         `,
@@ -84,9 +89,10 @@ exports.postSignup = async (req, res, next) => {
       if (err) console.log(err);
       else {
         await User.create({
+          name:fullname,
           email: email,
-          password: bcrypt.hashSync(password, 12),
-          status: emailToken,
+          status:emailToken,
+          password: bcrypt.hashSync(password, 12)
         });
         return res.status(200).send({
           message: "Send mail success!. Please check your mail to vetify",
@@ -96,23 +102,26 @@ exports.postSignup = async (req, res, next) => {
   }
 };
 
+exports.getVerifyEmail = (req, res, next) => {
+  res.status(200).render("auth/verify-email/:activation_token", {
+    isAuthenticated: false,
+  });
+};
+
 // verify email
-exports.getVerifyEmail = async (req, res, next) => {
-  const token = req.params.token;
-  console.log(token);
+exports.postVerifyEmail = async (req, res, next) => {
+  const token = req.params.activation_token;
+  const email = req.body.email;
   const user = await User.findOne({
     where: {
-      status: token,
-    },
+      email: email
+    }
   });
-
-  if (user === null) {
-    return res.status(404).send({ message: "Your account is verified" });
-  } else {
+  if (user) {
     user.status = null;
     await user.save();
-    return res.status(200).send({ message: "Verified success" });
-  }
+    return res.status(200).send(user);
+  } else return res.status(404).send({ message: "Account not exists!" });
 };
 
 // logout
@@ -150,19 +159,18 @@ exports.postForgotPassword = async (req, res, next) => {
     req.session.email = email;
     const msg = {
       to: email, // Change to your recipient
-      from: "ducga079099@gmail.com", // Change to your verified sender
+      from: "myshopuwp@gmail.com", // Change to your verified sender
       subject: "Sending with SendGrid is Fun",
       text: `passcode`,
       html: `<p>Code:${code}</p>`,
     };
-    sgMail
-      .send(msg)
-      .then(() => {
-        console.log("Email sent");
-        return res.status(200).redirect("/import-code");
-      })
-      .catch((error) => {
-        console.error(error);
+      transporter.sendMail(msg, async (err, info) => {
+        if (err) console.log(err);
+        else {
+          return res.status(200).send({
+            message: "Send mail success!. Please check your mail to vetify",
+          });
+        }
       });
   }
 };
@@ -187,12 +195,14 @@ exports.getChangePassword = (req, res, next) => {
 exports.postChangePassword = async (req, res, next) => {
   const password = req.body.password;
   const comfirmPassword = req.body.comfirmPassword;
+  const email=req.session.email;
   if (
     password.trim() !== "" &&
     comfirmPassword.trim() !== "" &&
     password === comfirmPassword
   ) {
-    const user = await User.findOne({ where: { email: req.session.email } });
+    const user = await User.findOne({ where: { email: email } });
+    
     user.password = bcrypt.hashSync(password, 12);
     await user.save();
     delete req.session.email;

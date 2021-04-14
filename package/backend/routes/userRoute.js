@@ -6,7 +6,7 @@ const user = require('../controllers/user.controllers');
 
 
 // sign in
-router.get('/signin', user.getSignin);
+// router.get('/signin', user.getSignin);
 
 router.post('/signin', user.postSignin);
 
@@ -33,7 +33,9 @@ router.get('/signup', user.getSignup);
 
 router.post('/signup', user.postSignup);
 
-router.get('/verify-email', user.getVerifyEmail);
+router.get('/verify-email/:activation_token', user.getVerifyEmail);
+
+router.post('/verify-email/:activation_token', user.postVerifyEmail);
 
 router.get('/user/order-list', user.orderList);
 

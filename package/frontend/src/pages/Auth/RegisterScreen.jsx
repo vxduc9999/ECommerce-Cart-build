@@ -3,25 +3,16 @@ import { useSelector, useDispatch } from "react-redux";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { isValid, isEmail, isLength, isMatch } from "../../utils/validation";
-import axios from "../../redux/configAxios";
 
 // Actions
 import { getRegister } from "../../redux/actions/authActions";
 
 const RegisterScreen = () => {
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [confirmPassword, setConfirmPassword] = useState("");
   const dispatch = useDispatch();
-  const test = useSelector((state) => state.getRegister);
-
-  const loginHandler = (e) => {
-    e.preventDefault();
-    dispatch(getRegister(email, password, confirmPassword));
-  };
+  let history = useHistory();
 
   const [user, setUser] = useState("");
-  const { email, password, confirmPassword, err, success } = user;
+  const { email, password, confirmPassword, fullname,err, success} = user;
 
   const handleChangeInput = (e) => {
     const { name, value } = e.target;
@@ -32,7 +23,6 @@ const RegisterScreen = () => {
 
   const HandleSubmit = async (e) => {
     e.preventDefault();
-
     if (!isEmail(email))
       return setUser({ ...user, err: "Invalid emails.", success: "" });
 
@@ -53,24 +43,33 @@ const RegisterScreen = () => {
     if (!isMatch(password, confirmPassword))
       return setUser({ ...user, err: "Password did not match.", success: "" });
 
-    await dispatch(getRegister(email, password));
-    console.log(counter);
+    await dispatch(getRegister(email, password,fullname));
+    
     setUser({ ...user, err: counter.error, success: counter.message });
+    history.push("/login")
   };
 
   return (
     <div id="container">
       <div class="form-container1 ">
-        {counter.error}
-        <form onSubmit={HandleSubmit} class="sign-up-container form">
+        <p>{counter.error}</p>
+        <form onSubmit={(e) => HandleSubmit(e)} class="sign-up-container form">
           <h1 class="title">Sign Up</h1>
+          <div class="input-field">
+          <i class="fas fa-pen"></i>
+            <input type="text"
+              placeholder="Name"
+              value={fullname}
+              name="fullname"
+              onChange={(e) => handleChangeInput(e)} />
+          </div>
           <div class="input-field">
             <i class="fas fa-user"></i>
             <input type="email"
               placeholder="Email"
               value={email}
               name="email"
-              onChange={handleChangeInput} />
+              onChange={(e) => handleChangeInput(e)} />
           </div>
           <div class="input-field">
             <i class="fas fa-lock"></i>
@@ -78,7 +77,7 @@ const RegisterScreen = () => {
               placeholder="Password"
               value={password}
               name="password"
-              onChange={handleChangeInput} />
+              onChange={(e) => handleChangeInput(e)}/>
           </div>
           <div class="input-field">
             <i class="fas fa-check-circle"></i>
@@ -86,7 +85,7 @@ const RegisterScreen = () => {
               placeholder="Confirm Password"
               value={confirmPassword}
               name="confirmPassword"
-              onChange={handleChangeInput} />
+              onChange={(e) => handleChangeInput(e)} />
           </div>
           <button className="button" type="submit">Sign Up</button>
           <p class="social-text">Or sign up with social platforms</p>

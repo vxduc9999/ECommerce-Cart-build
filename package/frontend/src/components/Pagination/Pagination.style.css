@@ -10,7 +10,6 @@
 
 .pagination .pagination_item{
     padding: 8px;
-    line-height: 40px;
     cursor: pointer;
 }
 
@@ -27,7 +26,7 @@
 	border: 1px solid #4481eb;
 	background-color: #4481eb;
 	color: #FFFFFF;
-	padding: 5px;
+    padding: 2px 4px;
 	letter-spacing: 1px;
 	transition: all 80ms ease-in;
 	cursor: pointer;

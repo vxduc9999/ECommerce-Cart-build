@@ -15,14 +15,14 @@ const crypto = require("crypto");
 // show all data
 exports.getHomePage = async (req, res, next) => {
   products
-    .findAll({ limit: 20 })
+    .findAll({ limit: 50 })
     .then((products) => res.send(products))
     .catch((err) => console.log(err));
 };
 
 // test pagination
 exports.phone = async (req, res, next) => {
-  let perPage = 10; // qty product in 1 page
+  let perPage = 8; // qty product in 1 page
   let page = req.query.p || 1;
   products
     .findAndCountAll({
@@ -106,6 +106,7 @@ exports.getDetailProduct = (req, res, next) => {
 
 // add to cart
 exports.postDetailProduct = async (req, res, next) => {
+  console.log(req.body);
   const product_id = req.body.product_id;
   const price = req.body.price;
   const quantity = req.body.quantity;
