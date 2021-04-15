@@ -1,24 +1,14 @@
-import { useState, useEffect } from "react";
-import {useSelector,useDispatch} from "react-redux"
-import { useHistory } from "react-router-dom";
+
+import {useDispatch} from "react-redux"
 import { getVerifyEmail } from "../../redux/actions/authActions";
 
 const VertifyActiceScreen = (props) => {
-  const history=useHistory();
   const dispatch = useDispatch();
-
-  const HandleSubmit = async (e) => {
-    history.push("/login")
-    e.preventDefault();
-    
-    dispatch(getVerifyEmail('ndkhang0512@gmail.com'));
-  };
+  dispatch(getVerifyEmail(props.match.params.activation_token));
+  
   return (
     <div className="container" id="container">
-        <form onSubmit={(e) => HandleSubmit(e)}>
-          
-        <button className="button" name="status" type="submit">Sign In</button>
-        </form>
+        <h5>You have successfully registered for an account</h5>
     </div>
   );
 };

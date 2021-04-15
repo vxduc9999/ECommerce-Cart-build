@@ -111,17 +111,11 @@ exports.getVerifyEmail = (req, res, next) => {
 };
 
 // verify email
-<<<<<<< HEAD
 exports.postVerifyEmail = async (req, res, next) => {
-  const token = req.params.activation_token;
-  const email = req.body.email;
-=======
-exports.getVerifyEmail = async (req, res, next) => {
-  const token = req.params.token;
->>>>>>> 145c805ad623043bcf52cd18c4dbae4704fb2141
+  const token = req.body.token;
   const user = await User.findOne({
     where: {
-      email: email
+      status: token
     }
   });
   if (user) {
@@ -157,6 +151,7 @@ function makeid(length) {
 // done
 exports.postForgotPassword = async (req, res, next) => {
   const email = req.body.email;
+  console.log(`🚀 => file: user.controllers.js => line 155 => email`, email)
   const user = await User.findOne({ where: { email: email } });
   if (!user)
     return res.status(404).send({
@@ -171,26 +166,16 @@ exports.postForgotPassword = async (req, res, next) => {
       text: `passcode`,
       html: `<p>Code:${code}</p>`,
     };
-<<<<<<< HEAD
       transporter.sendMail(msg, async (err, info) => {
         if (err) console.log(err);
         else {
+          user.status=code
+          await user.save();
           return res.status(200).send({
             message: "Send mail success!. Please check your mail to vetify",
           });
         }
       });
-=======
-    transporter.sendMail(msg, async (err, info) => {
-      if (err) console.log(err);
-      else {
-        return res.status(200).send({
-          message: "Send mail success!. Please check your mail to get code",
-          code: code,
-        });
-      }
-    });
->>>>>>> 145c805ad623043bcf52cd18c4dbae4704fb2141
   }
 };
 
@@ -199,11 +184,18 @@ exports.getImportCode = (req, res, next) => {
   res.status(200).render("auth/enterCode");
 };
 
-exports.postImportCode = (req, res, next) => {
+exports.postImportCode = async (req, res, next) => {
   const code = req.body.code;
-  if (code === req.session.code) {
-    res.status(200).redirect("/changepassword");
-  } else res.redirect("/import-code");
+  const user = await User.findOne({
+    where: {
+      status: code
+    }
+  });
+  if (user) {
+    user.status = null;
+    await user.save();
+    return res.status(200).redirect("/changepassword");;
+  } else res.status(200).redirect("/import-code");;
 };
 
 // change password
@@ -213,10 +205,11 @@ exports.getChangePassword = (req, res, next) => {
 
 // done
 exports.postChangePassword = async (req, res, next) => {
-  const email = req.body.email;
+  // const email = req.body.email;
   const password = req.body.password;
   const comfirmPassword = req.body.comfirmPassword;
-  const email=req.session.email;
+  const email=req.body.email;
+  console.log(`🚀 => file: user.controllers.js => line 212 => email`, email)
   if (
     password.trim() !== "" &&
     comfirmPassword.trim() !== "" &&

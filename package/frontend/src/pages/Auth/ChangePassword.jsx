@@ -7,19 +7,15 @@ import { getChangePassword } from "../../redux/actions/authActions";
 
 const ChangePassword= () =>{
   const [password, setPass] = useState("");
-  console.log(`🚀 => file: ChangePassword.jsx => line 10 => password`, password)
   const [confimPassword, setConfimPass] = useState("");
-  console.log(`🚀 => file: ChangePassword.jsx => line 11 => confimPassword`, confimPassword)
 
   const dispatch = useDispatch();
 
   let history = useHistory();
   const sendHandler = (e) => {
-    
-  console.log(`🚀 => file: ChangePassword.jsx => line 23 => e`, e)
     e.preventDefault();
     dispatch(getChangePassword(password,confimPassword));
-    history.push('/');
+    history.push('/login');
   };
 
     return (

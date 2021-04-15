@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { FormGroup, Label, Input, Form } from "reactstrap";
-import { useHistory } from "react-router-dom";
 import React from "react";
 // Components
 import CartItem from "../../components/CartItem/CartItem";

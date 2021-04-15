@@ -16,7 +16,6 @@ const HomeScreen = () => {
   //home
   const dispatch = useDispatch();
 
-    const dispatch = useDispatch();
     const [post, setPosts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const postsPerPage = 8;

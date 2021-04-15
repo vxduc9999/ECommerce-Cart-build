@@ -1,7 +1,5 @@
 import * as actionTypes from "../constants/cartConstants";
 import axios from "../configAxios";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 export const addToCart = (slug, qty, id, price) => async (
   dispatch,
@@ -52,7 +50,8 @@ export const qtyToCart = (
       product_id: product_id,
       quantity: quantity,
     });
-
+    console.log(`🚀 => file: cartActions.js => line 59 => getState().users.user.id`, getState().users.user.id)
+      
     dispatch({
       type: actionTypes.SUB_QTY_FROM_CART,
       payload: {

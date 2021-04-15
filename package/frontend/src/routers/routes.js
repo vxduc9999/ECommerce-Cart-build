@@ -21,6 +21,7 @@ function Routes() {
   //const [sideToggle, setSideToggle] = useState(false);
   return (
     <Router>
+      <VertifyActice/>
       <Header />
         <LoginScreen />
         <RegisterScreen />
@@ -29,7 +30,6 @@ function Routes() {
         <CartRoute />
         <OrderRoute />
         <ViewProductRoute />
-        <VertifyActice/>
         <ForgotRoute/>
         <ChangepassRoute/>
         <ImportCodeRoute/>

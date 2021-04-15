@@ -1,17 +1,19 @@
 import React from 'react';
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { getImportCode } from '../../redux/actions/authActions';
 
-const ImportCode= (props) =>{
+const ImportCode= () =>{
   const [code, setCode] = useState("");
-
+  const valueIP = useSelector((state) => state.users.valueIP);
   const dispatch = useDispatch();
 
   let history = useHistory();
-  const sendHandler = (e) => {
+  if(valueIP===true){
     history.push('/changepassword');
+  }
+  const sendHandler = (e) => {
     e.preventDefault();
     dispatch(getImportCode(code));
   };

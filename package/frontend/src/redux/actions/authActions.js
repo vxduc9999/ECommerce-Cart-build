@@ -18,8 +18,6 @@ export const getLogin = (email, password) => async (dispatch, getState) => {
       },
     });
     sessionStorage.setItem("users", JSON.stringify(getState().users));
-    console.log(`🚀 => file: authActions.js => line 24 => getState().users`, getState().users)
-    // setSession("users",data)
   } catch (error) {
     dispatch({
       type: actionTypes.LOGIN_FAIL,
@@ -42,7 +40,7 @@ export const getLogout = () => async (dispatch) => {
   });
 };
 
-export const getRegister = (email, password,fullname) => async (dispatch) => {
+export const getRegister = (email, password,fullname) => async (dispatch,getState) => {
   try {
     dispatch({ type: actionTypes.REGISTER_REQUEST });
     const { data } = await axios.post("/signup", {
@@ -54,8 +52,12 @@ export const getRegister = (email, password,fullname) => async (dispatch) => {
 
     dispatch({
       type: actionTypes.REGISTER_SUCCESS,
-      payload: data
+      payload: {
+        user: data,
+        loggedIn: false,
+      },
     });
+    sessionStorage.setItem("users", JSON.stringify(getState().users));
   } catch (error) {
     dispatch({
       type: actionTypes.REGISTER_FAIL,
@@ -68,12 +70,14 @@ export const getRegister = (email, password,fullname) => async (dispatch) => {
 };
 
 
-export const getVerifyEmail = (email) => async (dispatch) => {
+export const getVerifyEmail = (activation_token) => async (dispatch,getState) => {
   try {
+    console.log(`🚀 => file: authActions.js => line 82 => activation_token`, activation_token)
     dispatch({ type: actionTypes.LOGIN_REQUEST });
     const { data } = await axios.post("/verify-email/activation_token", {
-       email:email 
+       token: activation_token 
     });
+    
     dispatch({
       type: actionTypes.LOGIN_SUCCESS,
       payload: data
@@ -98,7 +102,10 @@ export const getImportCode = (code) => async (dispatch) => {
 
     dispatch({
       type: actionTypes.LOGIN_SUCCESS,
-      payload: data
+      payload: {
+        user: data,
+        valueIP: true,
+      },
     });
   } catch (error) {
     dispatch({
@@ -120,9 +127,11 @@ export const getForgotPassword = (email) => async (dispatch, getState) => {
 
     dispatch({
       type: actionTypes.LOGIN_SUCCESS,
-      payload: data
+      payload: {
+        user: data,
+      },
     });
-    sessionStorage.setItem("user", JSON.stringify(getState().users));     
+    sessionStorage.setItem("users", JSON.stringify(getState().users));     
     
   } catch (error) {
     dispatch({
@@ -137,20 +146,18 @@ export const getForgotPassword = (email) => async (dispatch, getState) => {
 
 export const getChangePassword = (password,comfirmPassword) => async (dispatch, getState) => {
   try {
-    dispatch({ type: actionTypes.LOGIN_REQUEST });
-    console.log(`🚀 => file: authActions.js => line 151 => getState().users.user.email`, getState().users.user.email)
     const { data } = await axios.post("/changepassword", {
       password: password,
       comfirmPassword: comfirmPassword,
       email:getState().users.user.email
     });
-    console.log(`🚀 => file: authActions.js => line 147 => data`, data)
-
+    
+    console.log(`🚀 => file: authActions.js => line 161 => getState().users`, getState().users)
+    
 
     dispatch({
       type: actionTypes.LOGIN_SUCCESS,
       payload: {
-      
         user: data,
       },
     });
