@@ -2,20 +2,29 @@ import React from 'react';
 import './Footer.layout.css';
 import "../layout.css"
 
-FooterLayout.propTypes = {
-    
-};
 
 function FooterLayout(props) {
+    function topFunction() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+
+    window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        document.getElementById("myBtn").style.display = "block";
+    } else {
+        document.getElementById("myBtn").style.display = "none";
+    }
+}
+
+
     return (
         <footer className="footer">
             <div className="container">
-                <div className="about-us">
-                    <h2>About us</h2>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium quia atque nemo ad modi officiis iure, autem nulla tenetur repellendus.</p>
-                </div>
                 <div className="newsletter">
-                    <h2>Rjfjhh</h2>
+                    <h2>Introduct</h2>
                     <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis aperiam sed facilis eaque. Exercitationem expedita nam aspernatur quia hic repudiandae illo tempora quos est ipsam voluptas dolorem, distinctio nulla neque.</p>
                    
                 </div>
@@ -43,10 +52,10 @@ function FooterLayout(props) {
             </div>
             <div className="rights flex-row">
                 <h4 className="text-gray">
-                    <a href="#" target="_black">AECC Team</a>
+                    <a href="#">AECC Team</a>
                 </h4>
             </div>
-            <div className="move-up">
+            <div onClick={() => topFunction()} id="myBtn" >
                 <span><i className="fas fa-arrow-circle-up fa-2x"></i></span>
             </div>
         </footer>

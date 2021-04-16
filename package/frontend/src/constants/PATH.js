@@ -9,5 +9,6 @@ exports.PATH = {
     VERIFY: "/verify-email/:activation_token",
     FORGOTPASS:"/forgot-password",
     CHANGEPASS:"/changepassword",
-    ENTERCODE:"/import-code"
+    ENTERCODE:"/import-code",
+    BLOG:"/blog",
   };

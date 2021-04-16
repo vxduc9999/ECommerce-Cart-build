@@ -16,6 +16,7 @@ import VertifyActice from "./vertifyActive.route";
 import ForgotRoute from "./forgot.route"
 import ChangepassRoute from "./changepass.route";
 import ImportCodeRoute from "./entercode.route";
+import BlogRoute from "./blog.route";
 
 function Routes() {
   //const [sideToggle, setSideToggle] = useState(false);
@@ -33,6 +34,7 @@ function Routes() {
         <ForgotRoute/>
         <ChangepassRoute/>
         <ImportCodeRoute/>
+        <BlogRoute/>
       <Footer/>
     </Router>
     );

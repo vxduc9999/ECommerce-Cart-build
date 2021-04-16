@@ -126,14 +126,14 @@ function HeaderLayout() {
                 <ul>
                   <li>
                     <div className="contact_icone" >
-                      <i class="fab fa-apple"></i>
+                      <img src="./online-shopping.png" alt="logo"/>
                     </div>
                   </li>
                   <li><Link to="/">Mac</Link></li>
                   <li><a href="#">iPad</a></li>
                   <li><a href="#">iPhone</a></li>
                   <li><a href="#">Watch</a></li>
-                  <li><a href="#">Support</a></li>
+                  <li><Link to="/blog">Blog</Link></li>
 
                   <li>
                     <SearchComponent />
