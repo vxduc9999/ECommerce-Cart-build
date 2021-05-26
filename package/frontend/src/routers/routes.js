@@ -17,6 +17,7 @@ import ForgotRoute from "./forgot.route"
 import ChangepassRoute from "./changepass.route";
 import ImportCodeRoute from "./entercode.route";
 import BlogRoute from "./blog.route";
+import ContacttRoute from "./contact.route";
 
 function Routes() {
   //const [sideToggle, setSideToggle] = useState(false);
@@ -35,6 +36,7 @@ function Routes() {
         <ChangepassRoute/>
         <ImportCodeRoute/>
         <BlogRoute/>
+        <ContacttRoute/>
       <Footer/>
     </Router>
     );

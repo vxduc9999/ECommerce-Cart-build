@@ -11,4 +11,5 @@ exports.PATH = {
     CHANGEPASS:"/changepassword",
     ENTERCODE:"/import-code",
     BLOG:"/blog",
+    CONTACT:"/contact"
   };
